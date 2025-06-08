@@ -1,15 +1,22 @@
 
 -- CINEMA BOOKING DATABASE --
 
--- TẠO DATABASE
 CREATE DATABASE IF NOT EXISTS cinema_application;
 USE cinema_application;
 
--- 1. Admin Table
+-- 0. User Table (dành cho customer & employee)
+CREATE TABLE User (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('customer', 'employee') NOT NULL,
+    ref_id INT NOT NULL
+);
+
+-- 1. Admin Table (duy nhất 1 admin, không dùng id)
 CREATE TABLE Admin (
-    admin_id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) UNIQUE,
-    password_hash VARCHAR(255),
+    username VARCHAR(50) PRIMARY KEY,
+    password_hash VARCHAR(255) NOT NULL,
     name VARCHAR(100),
     email VARCHAR(100)
 );
@@ -29,9 +36,7 @@ CREATE TABLE Employee (
     employee_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
     phone VARCHAR(20),
-    email VARCHAR(100),
-    created_by_admin_id INT,
-    FOREIGN KEY (created_by_admin_id) REFERENCES Admin(admin_id)
+    email VARCHAR(100)
 );
 
 -- 4. Movie Table

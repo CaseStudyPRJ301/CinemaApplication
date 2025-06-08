@@ -13,7 +13,7 @@ public class BaseRepository {
 
     public BaseRepository() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             System.out.println("kết nối thành công");
         } catch (ClassNotFoundException | SQLException e) {
@@ -22,6 +22,15 @@ public class BaseRepository {
     }
 
     public Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                System.out.println("kết nối lại thành công");
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
         return connection;
     }
 }
