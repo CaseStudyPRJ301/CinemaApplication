@@ -3,4 +3,39 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+         
+    <!-- UTF-8 Encoding Filter for Vietnamese characters -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>ignore</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <!-- Cinema Servlet for main application flow -->
+    <servlet>
+        <servlet-name>CinemaServlet</servlet-name>
+        <servlet-class>com.example.cinemaapplication.controller.CinemaServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CinemaServlet</servlet-name>
+        <url-pattern>/cinema</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>

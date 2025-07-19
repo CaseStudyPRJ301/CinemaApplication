@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import com.example.cinemaapplication.repository.Imp.EmployeeRepositoryImp;
 import com.example.cinemaapplication.model.Employee;
 import java.util.List;
 import com.example.cinemaapplication.service.IEmployeeService;
@@ -25,7 +24,7 @@ public class AdminServlet extends HttpServlet {
 
         // Check authentication first
         if (!isAuthenticated(request)) {
-            response.sendRedirect("?action=login");
+            response.sendRedirect("cinema?action=login");
             return;
         }
 
@@ -56,7 +55,7 @@ public class AdminServlet extends HttpServlet {
         }
         // Check authentication first
         if (!isAuthenticated(request)) {
-            response.sendRedirect("?action=login");
+            response.sendRedirect("cinema?action=login");
             return;
         }
 
@@ -83,28 +82,28 @@ public class AdminServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         return session != null && 
                session.getAttribute("role") != null && 
-               session.getAttribute("role").equals("ADMIN");
+               session.getAttribute("role").equals("admin");
     }
 
     private void showDashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         IEmployeeService employeeService = new EmployeeServiceImp();
         List<Employee> employeeList = employeeService.getAllEmployees();
         request.setAttribute("employeeList", employeeList);
-        request.getRequestDispatcher("view/admin/admin-dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("admin/admin-dashboard.jsp").forward(request, response);
     }
 
     private void showEmployeeManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Implement employee management view
-        request.getRequestDispatcher("view/admin/employee-management.jsp").forward(request, response);
+        request.getRequestDispatcher("admin/employee-management.jsp").forward(request, response);
     }
 
     private void showUserManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Implement user management view
-        request.getRequestDispatcher("view/admin/user-management.jsp").forward(request, response);
+        request.getRequestDispatcher("admin/user-management.jsp").forward(request, response);
     }
 
     private void showAddEmployeeForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("view/admin/add-employee-form.jsp").forward(request, response);
+        request.getRequestDispatcher("admin/add-employee-form.jsp").forward(request, response);
     }
 
     private void editEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -122,7 +121,7 @@ public class AdminServlet extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect("?action=login");
+        response.sendRedirect("cinema?action=login");
     }
 
     private void handleAddEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -139,25 +138,17 @@ public class AdminServlet extends HttpServlet {
         IEmployeeService employeeService = new EmployeeServiceImp();
         boolean empSuccess = employeeService.insertEmployee(employee);
 
-        int employeeId = -1;
-        if (empSuccess) {
-            java.util.List<Employee> all = employeeService.getAllEmployees();
-            if (!all.isEmpty()) {
-                employeeId = all.get(all.size() - 1).getEmployeeId();
-            }
-        }
-
         // Thêm user cho nhân viên
         boolean userSuccess = false;
-        if (empSuccess && employeeId != -1) {
+        if (empSuccess && employee.getEmployeeId() > 0) {
             UserRepository userRepo = new UserRepository();
-            userSuccess = userRepo.registerUser(username, password, "employee", employeeId);
+            userSuccess = userRepo.registerUser(username, password, "employee", employee.getEmployeeId());
         }
 
         if (empSuccess && userSuccess) {
             response.sendRedirect("admin?action=dashboard");
         } else {
-            request.setAttribute("message", "Thêm nhân viên thất bại hoặc tên đăng nhập đã tồn tại!");
+            request.setAttribute("message", "Failed to add employee or username already exists!");
             showAddEmployeeForm(request, response);
         }
     }

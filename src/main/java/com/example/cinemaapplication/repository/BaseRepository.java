@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-// Kết nối DB
+// Database connection
 public class BaseRepository {
     private Connection connection;
     private static final String URL = "jdbc:mysql://localhost:3306/cinema_application";
@@ -15,7 +15,7 @@ public class BaseRepository {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("kết nối thành công");
+            System.out.println("Connection established successfully");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -26,7 +26,7 @@ public class BaseRepository {
             if (connection == null || connection.isClosed()) {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-                System.out.println("kết nối lại thành công");
+                System.out.println("Reconnection successful");
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

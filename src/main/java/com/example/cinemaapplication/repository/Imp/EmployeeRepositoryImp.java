@@ -37,11 +37,21 @@ public class EmployeeRepositoryImp extends BaseRepository implements IEmployeeRe
     @Override
     public boolean insertEmployee(Employee employee) {
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(INSERT_EMPLOYEE)) {
+             PreparedStatement ps = conn.prepareStatement(INSERT_EMPLOYEE, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, employee.getName());
             ps.setString(2, employee.getPhone());
             ps.setString(3, employee.getEmail());
-            return ps.executeUpdate() > 0;
+            
+            int result = ps.executeUpdate();
+            if (result > 0) {
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        employee.setEmployeeId(rs.getInt(1));
+                        return true;
+                    }
+                }
+            }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

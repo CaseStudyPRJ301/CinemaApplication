@@ -20,9 +20,8 @@ public class EmployeeServlet extends HttpServlet {
         // Check authentication first
         HttpSession session = request.getSession(false);
         String role = (session != null) ? (String) session.getAttribute("role") : null;
-        if (session == null || role == null ||
-            (!role.equals("employee") && !role.equals("customer"))) {
-            response.sendRedirect("?action=login");
+        if (session == null || role == null || !role.equals("employee")) {
+            response.sendRedirect("cinema?action=login");
             return;
         }
 
@@ -58,9 +57,8 @@ public class EmployeeServlet extends HttpServlet {
         // Check authentication first
         HttpSession session = request.getSession(false);
         String role = (session != null) ? (String) session.getAttribute("role") : null;
-        if (session == null || role == null ||
-            (!role.equals("employee") && !role.equals("customer"))) {
-            response.sendRedirect("?action=login");
+        if (session == null || role == null || !role.equals("employee")) {
+            response.sendRedirect("cinema?action=login");
             return;
         }
 
@@ -92,22 +90,22 @@ public class EmployeeServlet extends HttpServlet {
     }
 
     private void showDashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("view/employee/employee-dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("employee/employee-dashboard.jsp").forward(request, response);
     }
 
     private void showProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Implement profile view
-        request.getRequestDispatcher("view/user/profile.jsp").forward(request, response);
+        request.getRequestDispatcher("user/profile.jsp").forward(request, response);
     }
 
     private void showTickets(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Implement tickets view
-        request.getRequestDispatcher("view/user/tickets.jsp").forward(request, response);
+        request.getRequestDispatcher("user/tickets.jsp").forward(request, response);
     }
 
     private void showMovies(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Implement movies view
-        request.getRequestDispatcher("view/user/movies.jsp").forward(request, response);
+        request.getRequestDispatcher("user/movies.jsp").forward(request, response);
     }
 
     private void updateProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -130,6 +128,6 @@ public class EmployeeServlet extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect("?action=login");
+        response.sendRedirect("cinema?action=login");
     }
 }
