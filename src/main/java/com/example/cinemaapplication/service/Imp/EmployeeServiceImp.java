@@ -19,4 +19,14 @@ public class EmployeeServiceImp implements IEmployeeService {
     public boolean insertEmployee(Employee employee) {
         return employeeRepository.insertEmployee(employee);
     }
+
+    @Override
+    public boolean emailExists(String email) {
+        return employeeRepository.emailExists(email);
+    }
+
+    @Override
+    public boolean phoneExists(String phone) {
+        return employeeRepository.phoneExists(phone);
+    }
 } 

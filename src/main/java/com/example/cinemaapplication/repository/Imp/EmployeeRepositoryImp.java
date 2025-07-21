@@ -14,6 +14,8 @@ import java.util.List;
 public class EmployeeRepositoryImp extends BaseRepository implements IEmployeeRepository {
     private static final String SELECT_ALL_EMPLOYEES = "SELECT * FROM Employee";
     private static final String INSERT_EMPLOYEE = "INSERT INTO Employee (name, phone, email) VALUES (?, ?, ?)";
+    private static final String CHECK_EMAIL_EXISTS = "SELECT COUNT(*) FROM Employee WHERE email = ?";
+    private static final String CHECK_PHONE_EXISTS = "SELECT COUNT(*) FROM Employee WHERE phone = ?";
 
     @Override
     public List<Employee> getAllEmployees() {
@@ -56,5 +58,37 @@ public class EmployeeRepositoryImp extends BaseRepository implements IEmployeeRe
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public boolean emailExists(String email) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(CHECK_EMAIL_EXISTS)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean phoneExists(String phone) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(CHECK_PHONE_EXISTS)) {
+            ps.setString(1, phone);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

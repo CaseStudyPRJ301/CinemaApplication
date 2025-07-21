@@ -503,9 +503,13 @@
 										</div>
 										<h4>180k voters</h4>
 									</div>
-									<p>She is a devil princess from the demon world. She grew up sheltered by her parents and doesn't really know how to be evil or any of the common actions,   She is unable to cry due to Keita's accidental first wish, despite needed for him to wish...</p>
+									<p class="movie-description">
+										<span class="description-short">A young airbender must master all four elements to save the world from the Fire Nation's tyranny...</span>
+										<span class="description-full" style="display: none;">A young airbender must master all four elements to save the world from the Fire Nation's tyranny. Follow Aang and his friends as they journey across the world to defeat the Fire Lord and restore balance to the Avatar world. An epic adventure filled with martial arts, elemental magic, and timeless themes of friendship and courage.</span>
+										<span class="read-more-btn" onclick="toggleDescription(this)" style="color: #eb315a; cursor: pointer; margin-left: 5px;">Read more</span>
+									</p>
 									<div class="slide-trailor">
-										<a class="theme-btn theme-btn2" href="#"><i class="icofont icofont-play"></i> Tickets</a>
+										<a class="theme-btn theme-btn2" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-play"></i> Tickets</a>
 									</div>
 								</div>
 							</div>
@@ -531,9 +535,13 @@
 										</div>
 										<h4>180k voters</h4>
 									</div>
-									<p>She is a devil princess from the demon world. She grew up sheltered by her parents and doesn't really know how to be evil or any of the common actions,   She is unable to cry due to Keita's accidental first wish, despite needed for him to wish...</p>
+									<p class="movie-description">
+										<span class="description-short">A mystical forest deity protects the balance between nature and civilization in this epic fantasy adventure...</span>
+										<span class="description-full" style="display: none;">A mystical forest deity protects the balance between nature and civilization in this epic fantasy adventure. When humans threaten the sacred forest, the Deer God must make difficult choices to preserve the harmony between all living things. A visually stunning tale of environmental protection and spiritual awakening.</span>
+										<span class="read-more-btn" onclick="toggleDescription(this)" style="color: #eb315a; cursor: pointer; margin-left: 5px;">Read more</span>
+									</p>
 									<div class="slide-trailor">
-										<a class="theme-btn theme-btn2" href="#"><i class="icofont icofont-play"></i> Tickets</a>
+										<a class="theme-btn theme-btn2" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-play"></i> Tickets</a>
 									</div>
 								</div>
 							</div>

@@ -35,6 +35,21 @@ public class AdminServlet extends HttpServlet {
             case "manage-employees":
                 showEmployeeManagement(request, response);
                 break;
+            case "manage-customers":
+                showCustomerManagement(request, response);
+                break;
+            case "manage-movies":
+                showMovieManagement(request, response);
+                break;
+            case "manage-theaters":
+                showTheaterManagement(request, response);
+                break;
+            case "manage-tickets":
+                showTicketManagement(request, response);
+                break;
+            case "reports":
+                showReports(request, response);
+                break;
             case "manage-users":
                 showUserManagement(request, response);
                 break;
@@ -86,20 +101,45 @@ public class AdminServlet extends HttpServlet {
     }
 
     private void showDashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        IEmployeeService employeeService = new EmployeeServiceImp();
-        List<Employee> employeeList = employeeService.getAllEmployees();
-        request.setAttribute("employeeList", employeeList);
+        // Dashboard now only shows summary stats, no detailed employee list
         request.getRequestDispatcher("admin/admin-dashboard.jsp").forward(request, response);
     }
 
     private void showEmployeeManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: Implement employee management view
-        request.getRequestDispatcher("admin/employee-management.jsp").forward(request, response);
+        IEmployeeService employeeService = new EmployeeServiceImp();
+        List<Employee> employeeList = employeeService.getAllEmployees();
+        request.setAttribute("employeeList", employeeList);
+        request.getRequestDispatcher("admin/manage-employees.jsp").forward(request, response);
+    }
+
+    private void showCustomerManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO: Implement customer management view
+        response.getWriter().println("<h1>Customer Management - Coming Soon</h1>");
+    }
+
+    private void showMovieManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO: Implement movie management view
+        response.getWriter().println("<h1>Movie Management - Coming Soon</h1>");
+    }
+
+    private void showTheaterManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO: Implement theater management view
+        response.getWriter().println("<h1>Theater Management - Coming Soon</h1>");
+    }
+
+    private void showTicketManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO: Implement ticket management view
+        response.getWriter().println("<h1>Ticket Management - Coming Soon</h1>");
+    }
+
+    private void showReports(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO: Implement reports view
+        response.getWriter().println("<h1>Reports - Coming Soon</h1>");
     }
 
     private void showUserManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Implement user management view
-        request.getRequestDispatcher("admin/user-management.jsp").forward(request, response);
+        response.getWriter().println("<h1>User Management - Coming Soon</h1>");
     }
 
     private void showAddEmployeeForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -131,6 +171,14 @@ public class AdminServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        // Server-side validation
+        String errorMessage = validateEmployeeData(name, phone, email, username, password);
+        if (errorMessage != null) {
+            request.setAttribute("message", errorMessage);
+            showAddEmployeeForm(request, response);
+            return;
+        }
+
         Employee employee = new Employee();
         employee.setName(name);
         employee.setPhone(phone);
@@ -146,10 +194,72 @@ public class AdminServlet extends HttpServlet {
         }
 
         if (empSuccess && userSuccess) {
-            response.sendRedirect("admin?action=dashboard");
+            response.sendRedirect("admin?action=manage-employees");
         } else {
             request.setAttribute("message", "Failed to add employee or username already exists!");
             showAddEmployeeForm(request, response);
         }
+    }
+
+    private String validateEmployeeData(String name, String phone, String email, String username, String password) {
+        // Validate name
+        if (name == null || name.trim().isEmpty()) {
+            return "Employee name is required";
+        }
+        if (!name.matches("^[a-zA-Z\\s]+$")) {
+            return "Full name cannot contain numbers and special characters";
+        }
+        if (name.trim().length() < 2 || name.trim().length() > 50) {
+            return "Employee name must be between 2-50 characters";
+        }
+
+        // Validate phone
+        if (phone == null || phone.trim().isEmpty()) {
+            return "Phone number is required";
+        }
+        if (!phone.matches("^[0-9]{10,11}$")) {
+            return "Phone number cannot be filled with letters and characters";
+        }
+
+        // Validate email
+        if (email == null || email.trim().isEmpty()) {
+            return "Email is required";
+        }
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            return "Email must have @gmail.com";
+        }
+
+        // Validate username
+        if (username == null || username.trim().isEmpty()) {
+            return "Username is required";
+        }
+        if (!username.matches("^[a-zA-Z0-9_]{3,20}$")) {
+            return "Username must be 3-20 characters (letters, numbers, underscore only)";
+        }
+
+        // Validate password
+        if (password == null || password.trim().isEmpty()) {
+            return "Password is required";
+        }
+        if (password.length() < 6) {
+            return "Password must be at least 6 characters long";
+        }
+
+        // Check duplicate email and phone
+        IEmployeeService employeeService = new EmployeeServiceImp();
+        if (employeeService.emailExists(email)) {
+            return "Email address is already registered in the system";
+        }
+        if (employeeService.phoneExists(phone)) {
+            return "Phone number is already registered in the system";
+        }
+
+        // Check duplicate username
+        UserRepository userRepo = new UserRepository();
+        if (userRepo.isUsernameExists(username)) {
+            return "Username is already taken. Please choose another username";
+        }
+
+        return null; // No errors
     }
 }
