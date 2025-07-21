@@ -27,7 +27,6 @@ CREATE TABLE Customer (
                           name VARCHAR(100),
                           phone_number VARCHAR(20),
                           email VARCHAR(100),
-                          booking_method ENUM('online', 'offline'),
                           created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

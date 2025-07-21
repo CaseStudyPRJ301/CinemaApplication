@@ -576,6 +576,77 @@ hr {
 .single-portfolio {
     margin-top: 50px;
 }
+
+/* Remove flexbox - use Bootstrap grid instead */
+.portfolio-item {
+    display: block; /* Reset flexbox */
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.portfolio-item > div {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 50px; /* Increased spacing between rows */
+}
+
+/* Additional styling for better banner presentation */
+.single-portfolio {
+    margin-top: 0px; /* Remove top margin to prevent overlap */
+    margin-bottom: 20px; /* Add bottom margin for cleaner spacing */
+    transition: transform 0.3s ease;
+}
+
+.single-portfolio:hover {
+    transform: translateY(-10px);
+}
+
+.single-portfolio-img {
+    border-radius: 10px;
+    overflow: hidden;
+    min-height: 500px; /* Increased from 400px to 500px */
+}
+
+.portfolio-content {
+    padding: 15px 0;
+    text-align: center;
+}
+
+/* Ensure proper spacing for first row to avoid hr collision */
+.portfolio-item > div:nth-child(-n+3) {
+    margin-top: 20px; /* Add top margin for first row to prevent hover collision with hr */
+}
+
+/* Ensure proper spacing for second row */
+.portfolio-item > div:nth-child(n+4) {
+    margin-top: 100px; /* Increased from 60px to 100px for maximum spacing */
+}
+
+/* Ensure consistent height for all banners */
+.single-portfolio-img img {
+    width: 100%;
+    height: 500px; /* Increased from 400px to 500px for better image display */
+    object-fit: cover;
+}
+
+/* Responsive height for mobile */
+@media (max-width: 768px) {
+    .single-portfolio-img img {
+        height: 400px; /* Increased from 350px to 400px */
+    }
+    .single-portfolio-img {
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .single-portfolio-img img {
+        height: 350px; /* Increased from 300px to 350px */
+    }
+    .single-portfolio-img {
+        min-height: 350px;
+    }
+}
 .video-area,
 .single-portfolio-img {
 	overflow: hidden;

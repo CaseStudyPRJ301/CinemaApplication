@@ -1,6 +1,11 @@
 package com.example.cinemaapplication.controller;
 
 import com.example.cinemaapplication.repository.Imp.UserRepository;
+import com.example.cinemaapplication.model.Customer;
+import com.example.cinemaapplication.service.ICustomerService;
+import com.example.cinemaapplication.service.ITicketService;
+import com.example.cinemaapplication.service.Imp.CustomerServiceImp;
+import com.example.cinemaapplication.service.Imp.TicketServiceImp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
+import com.example.cinemaapplication.model.Ticket;
 
 @WebServlet(name = "CinemaServlet", value = "")
 public class CinemaServlet extends HttpServlet {
@@ -32,6 +40,10 @@ public class CinemaServlet extends HttpServlet {
             case "signup":
                 showSignupForm(req, resp);
                 break;
+            case "complete-profile":
+                // This is handled by POST method
+                showHomePage(req, resp);
+                break;
             case "logout":
                 logout(req, resp);
                 break;
@@ -41,6 +53,7 @@ public class CinemaServlet extends HttpServlet {
             case "seat-selection":
                 showSeatSelection(req, resp);
                 break;
+
             default:
                 showHomePage(req, resp);
                 break;
@@ -130,12 +143,17 @@ public class CinemaServlet extends HttpServlet {
                 return;
             }
             
+            // Get booked seats from database
+            ITicketService ticketService = new TicketServiceImp();
+            List<Integer> bookedSeatIds = ticketService.getBookedSeatIdsByShowtime(showtimeId);
+            
             // Set attributes for seat-selection.jsp
             req.setAttribute("movieId", movieId);
             req.setAttribute("movieTitle", movieTitle);
             req.setAttribute("showtime", showtime);
             req.setAttribute("theaterId", theaterId);
             req.setAttribute("showtimeId", showtimeId);
+            req.setAttribute("bookedSeatIds", bookedSeatIds);
             
             req.getRequestDispatcher("seat-selection.jsp").forward(req, resp);
             
@@ -173,6 +191,9 @@ public class CinemaServlet extends HttpServlet {
                 break;
             case "reset-password":
                 processResetPassword(req, resp);
+                break;
+            case "complete-profile":
+                processCompleteProfile(req, resp);
                 break;
             case "confirm-booking":
                 processConfirmBooking(req, resp);
@@ -266,28 +287,16 @@ public class CinemaServlet extends HttpServlet {
             return;
         }
 
-        // TODO: Create customer record first and get customer_id
-        // For now, we'll use a dummy customer_id
-        int customerId = 1; // This should be the actual customer_id from the Customer table
+        // Store username and password in session temporarily
+        HttpSession session = request.getSession();
+        session.setAttribute("tempUsername", username);
+        session.setAttribute("tempPassword", password);
 
-        // Register user
-        if (userRepository.registerUser(username, password, "customer", customerId)) {
-            String successMessage = "Registration successful! Please log in.";
-            if ("home".equals(source)) {
-                // Redirect back to home page with success message
-                response.sendRedirect("cinema?message=" + java.net.URLEncoder.encode(successMessage, "UTF-8") + "&type=success");
-            } else {
-                request.setAttribute("message", successMessage);
-                showLoginForm(request, response);
-            }
+        // Redirect with flag to show personal info form
+        if ("home".equals(source)) {
+            response.sendRedirect("cinema?showPersonalInfo=true");
         } else {
-            String errorMessage = "Registration failed! Please try again.";
-            if ("home".equals(source)) {
-                response.sendRedirect("cinema?message=" + java.net.URLEncoder.encode(errorMessage, "UTF-8"));
-            } else {
-                request.setAttribute("message", errorMessage);
-                showSignupForm(request, response);
-            }
+            response.sendRedirect("cinema?showPersonalInfo=true");
         }
     }
 
@@ -298,6 +307,130 @@ public class CinemaServlet extends HttpServlet {
         }
         // Redirect to home page after logout
         response.sendRedirect(request.getContextPath() + "/cinema");
+    }
+
+    private void processCompleteProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String source = request.getParameter("source");
+
+        // Get temporary credentials from session
+        HttpSession session = request.getSession();
+        String tempUsername = (String) session.getAttribute("tempUsername");
+        String tempPassword = (String) session.getAttribute("tempPassword");
+
+        if (tempUsername == null || tempPassword == null) {
+            String errorMessage = "Session expired. Please sign up again.";
+            if ("home".equals(source)) {
+                response.sendRedirect("cinema?message=" + java.net.URLEncoder.encode(errorMessage, "UTF-8"));
+            } else {
+                request.setAttribute("message", errorMessage);
+                showSignupForm(request, response);
+            }
+            return;
+        }
+
+        // Validate input
+        if (name == null || name.trim().isEmpty() || 
+            phone == null || phone.trim().isEmpty() || 
+            email == null || email.trim().isEmpty()) {
+            String errorMessage = "Please fill in all fields!";
+            if ("home".equals(source)) {
+                response.sendRedirect("cinema?message=" + java.net.URLEncoder.encode(errorMessage, "UTF-8"));
+            } else {
+                request.setAttribute("message", errorMessage);
+                showHomePage(request, response);
+            }
+            return;
+        }
+
+        // Server-side validation for personal info
+        String validationError = validatePersonalInfo(name, phone, email);
+        if (validationError != null) {
+            if ("home".equals(source)) {
+                response.sendRedirect("cinema?message=" + java.net.URLEncoder.encode(validationError, "UTF-8"));
+            } else {
+                request.setAttribute("message", validationError);
+                showHomePage(request, response);
+            }
+            return;
+        }
+
+        try {
+            // Create customer record
+            Customer customer = new Customer();
+            customer.setName(name.trim());
+            customer.setPhoneNumber(phone.trim());
+            customer.setEmail(email.trim());
+
+            ICustomerService customerService = new CustomerServiceImp();
+            boolean customerCreated = customerService.insertCustomer(customer);
+
+            if (customerCreated && customer.getCustomerId() > 0) {
+                // Create user account with actual customer_id
+                boolean userCreated = userRepository.registerUser(tempUsername, tempPassword, "customer", customer.getCustomerId());
+
+                if (userCreated) {
+                    // Clean up session
+                    session.removeAttribute("tempUsername");
+                    session.removeAttribute("tempPassword");
+
+                    // Set login session
+                    session.setAttribute("username", tempUsername);
+                    session.setAttribute("role", "customer");
+
+                    String successMessage = "Registration completed successfully! Welcome to our cinema!";
+                    if ("home".equals(source)) {
+                        response.sendRedirect("cinema?message=" + java.net.URLEncoder.encode(successMessage, "UTF-8") + "&type=success");
+                    } else {
+                        response.sendRedirect("cinema");
+                    }
+                    return;
+                }
+            }
+
+            // If we reach here, something failed
+            String errorMessage = "Registration failed! Please try again.";
+            if ("home".equals(source)) {
+                response.sendRedirect("cinema?message=" + java.net.URLEncoder.encode(errorMessage, "UTF-8"));
+            } else {
+                request.setAttribute("message", errorMessage);
+                showSignupForm(request, response);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorMessage = "An error occurred during registration. Please try again.";
+            if ("home".equals(source)) {
+                response.sendRedirect("cinema?message=" + java.net.URLEncoder.encode(errorMessage, "UTF-8"));
+            } else {
+                request.setAttribute("message", errorMessage);
+                showSignupForm(request, response);
+            }
+        }
+    }
+
+    private String validatePersonalInfo(String name, String phone, String email) {
+        // Validate name
+        if (name.length() < 2 || name.length() > 50) {
+            return "Full name must be between 2-50 characters";
+        }
+        if (!name.matches("^[a-zA-Z\\s]+$")) {
+            return "Full name cannot contain numbers or special characters";
+        }
+
+        // Validate phone
+        if (!phone.matches("^[0-9]{10,11}$")) {
+            return "Phone number must be 10-11 digits";
+        }
+
+        // Validate email
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            return "Email must be a valid @gmail.com address";
+        }
+
+        return null; // No validation errors
     }
 
     private void processResetPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -337,17 +470,114 @@ public class CinemaServlet extends HttpServlet {
             return;
         }
 
+        // Get all booking data from form
+        String movieId = req.getParameter("movieId");
+        String movieTitle = req.getParameter("movieTitle");
+        String showtime = req.getParameter("showtime");
+        String theaterId = req.getParameter("theaterId");
         String showtimeId = req.getParameter("showtimeId");
         String selectedSeats = req.getParameter("selectedSeats");
         String totalPrice = req.getParameter("totalPrice");
 
-        // TODO: Lưu thông tin vé vào database ở đây
+        // Debug: Log all received parameters
+        System.out.println("=== BOOKING CONFIRMATION DATA ===");
+        System.out.println("MovieId: " + movieId);
+        System.out.println("MovieTitle: " + movieTitle);
+        System.out.println("Showtime: " + showtime);
+        System.out.println("TheaterId: " + theaterId);
+        System.out.println("ShowtimeId: " + showtimeId);
+        System.out.println("SelectedSeats: " + selectedSeats);
+        System.out.println("TotalPrice: " + totalPrice);
+        System.out.println("===================================");
 
-        // Chuyển hướng sang trang xác nhận/thông báo thành công (hoặc trang payment)
-        req.setAttribute("selectedSeats", selectedSeats);
-        req.setAttribute("totalPrice", totalPrice);
+        // Validate required data
+        if (showtimeId == null || selectedSeats == null || totalPrice == null || 
+            selectedSeats.trim().isEmpty() || totalPrice.trim().isEmpty()) {
+            resp.sendRedirect("cinema?action=buy-tickets&error=" + 
+                java.net.URLEncoder.encode("Missing booking information. Please try again.", "UTF-8"));
+            return;
+        }
+
+        // Ensure default values for display
+        if (movieTitle == null || movieTitle.trim().isEmpty()) {
+            movieTitle = "Unknown Movie";
+        }
+        if (showtime == null || showtime.trim().isEmpty()) {
+            showtime = "Unknown Time";
+        }
+
+        // Save booking to database
+        boolean bookingSaved = saveBookingToDatabase(req, showtimeId, theaterId, selectedSeats);
+        if (!bookingSaved) {
+            System.err.println("Failed to save booking to database");
+            // Continue to payment page anyway for now
+        }
+
+        // Forward all data to payment page
+        req.setAttribute("movieId", movieId != null ? movieId : "0");
+        req.setAttribute("movieTitle", movieTitle);
+        req.setAttribute("showtime", showtime);
+        req.setAttribute("theaterId", theaterId != null ? theaterId : "0");
         req.setAttribute("showtimeId", showtimeId);
+        req.setAttribute("selectedSeats", selectedSeats.trim());
+        req.setAttribute("totalPrice", totalPrice.trim());
+        
         req.getRequestDispatcher("payment.jsp").forward(req, resp);
     }
+    
+    private boolean saveBookingToDatabase(HttpServletRequest req, String showtimeId, String theaterId, String selectedSeats) {
+        try {
+            HttpSession session = req.getSession(false);
+            String username = (String) session.getAttribute("username");
+            String role = (String) session.getAttribute("role");
+            
+            if (username == null || role == null) {
+                System.err.println("No username or role in session");
+                return false;
+            }
+            
+            // Get user ID based on role
+            Integer customerId = null;
+            Integer employeeId = null;
+            
+            if ("customer".equals(role)) {
+                customerId = userRepository.getUserIdFromUsername(username, role);
+                if (customerId == null) {
+                    System.err.println("Could not find customer ID for username: " + username);
+                    return false;
+                }
+                System.out.println("Found customer ID: " + customerId + " for username: " + username);
+            } else if ("employee".equals(role)) {
+                employeeId = userRepository.getUserIdFromUsername(username, role);
+                if (employeeId == null) {
+                    System.err.println("Could not find employee ID for username: " + username);
+                    return false;
+                }
+                System.out.println("Found employee ID: " + employeeId + " for username: " + username);
+            } else {
+                System.err.println("Invalid role for booking: " + role);
+                return false;
+            }
+            
+            // Create tickets using TicketService
+            ITicketService ticketService = new TicketServiceImp();
+            return ticketService.createTicketsForBooking(
+                selectedSeats, 
+                Integer.parseInt(showtimeId), 
+                Integer.parseInt(theaterId), 
+                customerId, 
+                employeeId
+            );
+            
+        } catch (Exception e) {
+            System.err.println("Error saving booking to database: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+
+    
+
 
 }

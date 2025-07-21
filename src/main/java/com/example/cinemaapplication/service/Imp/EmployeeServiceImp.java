@@ -29,4 +29,24 @@ public class EmployeeServiceImp implements IEmployeeService {
     public boolean phoneExists(String phone) {
         return employeeRepository.phoneExists(phone);
     }
+
+    @Override
+    public Employee getEmployeeById(int id) {
+        return employeeRepository.getEmployeeById(id);
+    }
+
+    @Override
+    public boolean updateEmployee(Employee employee) {
+        return employeeRepository.updateEmployee(employee);
+    }
+
+    @Override
+    public boolean emailExistsForOtherEmployee(String email, int excludeId) {
+        return employeeRepository.emailExistsForOtherEmployee(email, excludeId);
+    }
+
+    @Override
+    public boolean phoneExistsForOtherEmployee(String phone, int excludeId) {
+        return employeeRepository.phoneExistsForOtherEmployee(phone, excludeId);
+    }
 } 

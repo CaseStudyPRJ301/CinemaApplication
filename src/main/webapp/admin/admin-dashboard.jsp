@@ -34,6 +34,8 @@
             box-shadow: 4px 0 15px rgba(0,0,0,0.3);
             z-index: 1000;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
         
         .sidebar-header {
@@ -82,6 +84,9 @@
         /* Navigation Styles */
         .sidebar-nav {
             padding: 20px 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .nav-item {
@@ -104,6 +109,17 @@
             border-left-color: #eb315a;
             color: #fff;
             text-decoration: none;
+        }
+        
+        /* Logout specific styling */
+        .logout-nav {
+            color: #ff6b6b !important;
+        }
+        
+        .logout-nav:hover {
+            background: rgba(255, 107, 107, 0.1) !important;
+            border-left-color: #ff6b6b !important;
+            color: #fff !important;
         }
         
         .nav-icon {
@@ -332,39 +348,29 @@
                  </a>
              </div>
              <div class="nav-item">
-                 <a href="${pageContext.request.contextPath}/admin?action=manage-customers" class="nav-link">
-                     <i class="bi bi-people nav-icon"></i>
-                     Manage Customers
-                 </a>
-             </div>
-             <div class="nav-item">
-                 <a href="${pageContext.request.contextPath}/admin?action=manage-movies" class="nav-link">
-                     <i class="bi bi-film nav-icon"></i>
-                     Manage Movies
-                 </a>
-             </div>
-             <div class="nav-item">
-                 <a href="${pageContext.request.contextPath}/admin?action=manage-theaters" class="nav-link">
-                     <i class="bi bi-building nav-icon"></i>
-                     Manage Theaters
-                 </a>
-             </div>
-             <div class="nav-item">
                  <a href="${pageContext.request.contextPath}/admin?action=manage-employees" class="nav-link">
                      <i class="bi bi-person-badge nav-icon"></i>
                      Manage Employees
                  </a>
              </div>
              <div class="nav-item">
-                 <a href="${pageContext.request.contextPath}/admin?action=manage-tickets" class="nav-link">
-                     <i class="bi bi-ticket-perforated nav-icon"></i>
-                     Manage Tickets
+                 <a href="${pageContext.request.contextPath}/admin?action=manage-customers" class="nav-link">
+                     <i class="bi bi-people nav-icon"></i>
+                     Manage Customers
                  </a>
              </div>
              <div class="nav-item">
                  <a href="${pageContext.request.contextPath}/admin?action=reports" class="nav-link">
                      <i class="bi bi-graph-up nav-icon"></i>
                      Reports
+                 </a>
+             </div>
+             
+             <!-- Logout at bottom -->
+             <div class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                 <a href="${pageContext.request.contextPath}/cinema?action=logout" class="nav-link logout-nav">
+                     <i class="bi bi-box-arrow-right nav-icon"></i>
+                     Logout
                  </a>
              </div>
          </nav>
@@ -375,7 +381,6 @@
         <!-- Header -->
         <div class="content-header">
             <h1 style="color: #fff; margin: 0; font-size: 24px;">Cinema Management System</h1>
-                         <a href="${pageContext.request.contextPath}/cinema?action=logout" class="btn-logout">Logout</a>
         </div>
         
                  <!-- Welcome Section -->

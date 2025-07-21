@@ -8,9 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import com.example.cinemaapplication.model.Employee;
+import com.example.cinemaapplication.model.Customer;
 import java.util.List;
 import com.example.cinemaapplication.service.IEmployeeService;
 import com.example.cinemaapplication.service.Imp.EmployeeServiceImp;
+import com.example.cinemaapplication.service.ICustomerService;
+import com.example.cinemaapplication.service.Imp.CustomerServiceImp;
 import com.example.cinemaapplication.repository.Imp.UserRepository;
 
 @WebServlet("/admin")
@@ -31,6 +34,9 @@ public class AdminServlet extends HttpServlet {
         switch (action) {
             case "add-employee":
                 showAddEmployeeForm(request, response);
+                break;
+            case "edit-employee":
+                showEditEmployeeForm(request, response);
                 break;
             case "manage-employees":
                 showEmployeeManagement(request, response);
@@ -113,8 +119,10 @@ public class AdminServlet extends HttpServlet {
     }
 
     private void showCustomerManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: Implement customer management view
-        response.getWriter().println("<h1>Customer Management - Coming Soon</h1>");
+        ICustomerService customerService = new CustomerServiceImp();
+        List<Customer> customerList = customerService.getAllCustomers();
+        request.setAttribute("customerList", customerList);
+        request.getRequestDispatcher("admin/manage-customers.jsp").forward(request, response);
     }
 
     private void showMovieManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -146,9 +154,64 @@ public class AdminServlet extends HttpServlet {
         request.getRequestDispatcher("admin/add-employee-form.jsp").forward(request, response);
     }
 
-    private void editEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: Implement edit employee logic
+    private void showEditEmployeeForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idParam = request.getParameter("id");
+        if (idParam != null) {
+            try {
+                int employeeId = Integer.parseInt(idParam);
+                IEmployeeService employeeService = new EmployeeServiceImp();
+                Employee employee = employeeService.getEmployeeById(employeeId);
+                if (employee != null) {
+                    request.setAttribute("employee", employee);
+                    request.getRequestDispatcher("admin/edit-employee-form.jsp").forward(request, response);
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                // Invalid ID format
+            }
+        }
+        // If employee not found or invalid ID, redirect back to employee management
         response.sendRedirect("admin?action=manage-employees");
+    }
+
+    private void editEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idParam = request.getParameter("id");
+        if (idParam == null) {
+            response.sendRedirect("admin?action=manage-employees");
+            return;
+        }
+
+        try {
+            int employeeId = Integer.parseInt(idParam);
+            String name = request.getParameter("name");
+            String phone = request.getParameter("phone");
+            String email = request.getParameter("email");
+
+            // Server-side validation for edit
+            String errorMessage = validateEmployeeDataForEdit(name, phone, email, employeeId);
+            if (errorMessage != null) {
+                // Re-populate employee data for form display
+                Employee employee = new Employee(employeeId, name, phone, email);
+                request.setAttribute("employee", employee);
+                request.setAttribute("message", errorMessage);
+                request.getRequestDispatcher("admin/edit-employee-form.jsp").forward(request, response);
+                return;
+            }
+
+            Employee employee = new Employee(employeeId, name, phone, email);
+            IEmployeeService employeeService = new EmployeeServiceImp();
+            boolean success = employeeService.updateEmployee(employee);
+
+            if (success) {
+                response.sendRedirect("admin?action=manage-employees");
+            } else {
+                request.setAttribute("employee", employee);
+                request.setAttribute("message", "Failed to update employee!");
+                request.getRequestDispatcher("admin/edit-employee-form.jsp").forward(request, response);
+            }
+        } catch (NumberFormatException e) {
+            response.sendRedirect("admin?action=manage-employees");
+        }
     }
 
     private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -217,8 +280,11 @@ public class AdminServlet extends HttpServlet {
         if (phone == null || phone.trim().isEmpty()) {
             return "Phone number is required";
         }
-        if (!phone.matches("^[0-9]{10,11}$")) {
+        if (!phone.matches("^[0-9]+$")) {
             return "Phone number cannot be filled with letters and characters";
+        }
+        if (phone.length() < 10 || phone.length() > 11) {
+            return "Phone number must be 10-11 digits";
         }
 
         // Validate email
@@ -260,6 +326,49 @@ public class AdminServlet extends HttpServlet {
             return "Username is already taken. Please choose another username";
         }
 
-        return null; // No errors
+        return null;
+    }
+
+    private String validateEmployeeDataForEdit(String name, String phone, String email, int employeeId) {
+        // Validate name
+        if (name == null || name.trim().isEmpty()) {
+            return "Employee name is required";
+        }
+        if (!name.matches("^[a-zA-Z\\s]+$")) {
+            return "Full name cannot contain numbers and special characters";
+        }
+        if (name.trim().length() < 2 || name.trim().length() > 50) {
+            return "Employee name must be between 2-50 characters";
+        }
+
+        // Validate phone
+        if (phone == null || phone.trim().isEmpty()) {
+            return "Phone number is required";
+        }
+        if (!phone.matches("^[0-9]+$")) {
+            return "Phone number cannot be filled with letters and characters";
+        }
+        if (phone.length() < 10 || phone.length() > 11) {
+            return "Phone number must be 10-11 digits";
+        }
+
+        // Validate email
+        if (email == null || email.trim().isEmpty()) {
+            return "Email is required";
+        }
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            return "Email must have @gmail.com";
+        }
+
+        // Check duplicate email and phone for other employees
+        IEmployeeService employeeService = new EmployeeServiceImp();
+        if (employeeService.emailExistsForOtherEmployee(email, employeeId)) {
+            return "Email address is already registered by another employee";
+        }
+        if (employeeService.phoneExistsForOtherEmployee(phone, employeeId)) {
+            return "Phone number is already registered by another employee";
+        }
+
+        return null;
     }
 }

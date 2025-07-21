@@ -249,42 +249,128 @@
         let bookingData = null;
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Load booking data from session storage
-            const storedData = sessionStorage.getItem('bookingData');
+            // Get booking data from request attributes (server-side forward)
+            const movieId = '<%= request.getAttribute("movieId") != null ? request.getAttribute("movieId") : "" %>';
+            const movieTitle = '<%= request.getAttribute("movieTitle") != null ? request.getAttribute("movieTitle") : "" %>';
+            const showtime = '<%= request.getAttribute("showtime") != null ? request.getAttribute("showtime") : "" %>';
+            const theaterId = '<%= request.getAttribute("theaterId") != null ? request.getAttribute("theaterId") : "" %>';
+            const showtimeId = '<%= request.getAttribute("showtimeId") != null ? request.getAttribute("showtimeId") : "" %>';
+            const selectedSeats = '<%= request.getAttribute("selectedSeats") != null ? request.getAttribute("selectedSeats") : "" %>';
+            const totalPrice = '<%= request.getAttribute("totalPrice") != null ? request.getAttribute("totalPrice") : "" %>';
             
-            if (!storedData) {
-                alert('No booking data found. Redirecting to movie selection.');
+            console.log('Booking data received:', {
+                movieId, movieTitle, showtime, theaterId, showtimeId, selectedSeats, totalPrice
+            });
+            
+            // Debug: Check raw request attributes
+            console.log('Raw attributes from server:');
+            console.log('movieId attr: "<%= request.getAttribute("movieId") %>"');
+            console.log('movieTitle attr: "<%= request.getAttribute("movieTitle") %>"');
+            console.log('showtime attr: "<%= request.getAttribute("showtime") %>"');
+            console.log('theaterId attr: "<%= request.getAttribute("theaterId") %>"');
+            console.log('showtimeId attr: "<%= request.getAttribute("showtimeId") %>"');
+            console.log('selectedSeats attr: "<%= request.getAttribute("selectedSeats") %>"');
+            console.log('totalPrice attr: "<%= request.getAttribute("totalPrice") %>"');
+
+            
+            if (!showtimeId || !selectedSeats || !totalPrice || 
+                selectedSeats === 'null' || selectedSeats === '' || totalPrice === '' || totalPrice === '0') {
+                console.error('Invalid booking data - showing debug info:', {
+                    showtimeId: showtimeId,
+                    selectedSeats: selectedSeats,
+                    totalPrice: totalPrice,
+                    showtimeIdCheck: !showtimeId,
+                    selectedSeatsCheck: !selectedSeats,
+                    totalPriceCheck: !totalPrice
+                });
+                alert('No booking data found. Check console for details. Redirecting to movie selection.');
                 window.location.href = 'cinema?action=buy-tickets';
                 return;
             }
             
-            bookingData = JSON.parse(storedData);
+            // Parse selected seats string (e.g., "E5,E6" -> array of seats)
+            const seatList = selectedSeats.split(',').filter(seat => seat.trim() !== '');
+            
+            bookingData = {
+                movieId: movieId || 'N/A',
+                movieTitle: movieTitle || 'Unknown Movie',
+                showtime: showtime || 'Unknown Time',
+                theaterId: theaterId || '0',
+                showtimeId: showtimeId,
+                selectedSeats: seatList.map((seat, index) => ({
+                    number: seat.trim(),
+                    type: determineType(seat.trim()),
+                    price: Math.round(parseInt(totalPrice) / seatList.length)
+                })),
+                totalPrice: parseInt(totalPrice) || 0
+            };
+            
+            console.log('About to call displayBookingInfo with:', bookingData);
+            
+            // Test: Verify DOM elements exist before calling displayBookingInfo
+            console.log('DOM elements check:', {
+                bookingInfo: document.getElementById('booking-info') ? 'EXISTS' : 'MISSING',
+                finalTotal: document.getElementById('final-total') ? 'EXISTS' : 'MISSING'
+            });
+            
             displayBookingInfo();
+            
+            // Test: Verify content was updated
+            setTimeout(function() {
+                console.log('Final verification - booking info content:');
+                console.log(document.getElementById('booking-info').innerHTML);
+                console.log('Final total content:', document.getElementById('final-total').textContent);
+            }, 100);
         });
         
+        function determineType(seatNumber) {
+            const row = seatNumber.charAt(0);
+            if (['A', 'B', 'C'].includes(row)) return 'Normal';
+            if (['D', 'E', 'F', 'G'].includes(row)) return 'VIP';
+            if (row === 'H') return 'Couple';
+            return 'Normal';
+        }
+        
         function displayBookingInfo() {
+            console.log('displayBookingInfo called with data:', bookingData);
             const bookingInfo = document.getElementById('booking-info');
             const finalTotal = document.getElementById('final-total');
             
+            if (!bookingInfo || !finalTotal) {
+                console.error('DOM elements not found:', { bookingInfo, finalTotal });
+                return;
+            }
+            
+            if (!bookingData) {
+                console.error('No booking data available');
+                bookingInfo.innerHTML = '<p style="color: #eb315a;">No booking information available</p>';
+                finalTotal.textContent = 'Total: 0 VNĐ';
+                return;
+            }
+            
             const seatsHtml = bookingData.selectedSeats.map(seat => 
-                `<span class="seat-tag">${seat.number} (${seat.type})</span>`
+                '<span class="seat-tag">' + seat.number + '</span>'
             ).join('');
             
-            bookingInfo.innerHTML = `
-                <p><strong>Movie:</strong> ${bookingData.movieTitle}</p>
-                <p><strong>Theater:</strong> Theater ${bookingData.theaterId}</p>
-                <p><strong>Showtime:</strong> ${bookingData.showtime}</p>
-                <p><strong>Date:</strong> January 20, 2024</p>
-                <p><strong>Selected Seats:</strong><br>${seatsHtml}</p>
-                <p><strong>Number of Seats:</strong> ${bookingData.selectedSeats.length}</p>
-            `;
+            bookingInfo.innerHTML = 
+                '<p><strong>Movie:</strong> ' + (bookingData.movieTitle || 'N/A') + '</p>' +
+                '<p><strong>Theater:</strong> Theater ' + (bookingData.theaterId || 'N/A') + '</p>' +
+                '<p><strong>Showtime:</strong> ' + (bookingData.showtime || 'N/A') + '</p>' +
+                '<p><strong>Date:</strong> January 20, 2024</p>' +
+                '<p><strong>Selected Seats:</strong><br>' + seatsHtml + '</p>' +
+                '<p><strong>Number of Seats:</strong> ' + bookingData.selectedSeats.length + '</p>';
+                
+            console.log('Updated booking info HTML:', bookingInfo.innerHTML);
             
-            finalTotal.textContent = `Total: ${bookingData.totalPrice.toLocaleString()} VNĐ`;
+            // Format price using JavaScript toLocaleString
+            const totalText = 'Total: ' + bookingData.totalPrice.toLocaleString() + ' VNĐ';
+            console.log('Setting total to:', totalText);
+            finalTotal.textContent = totalText;
         }
         
         function selectPaymentMethod(method) {
             // Update radio button
-            document.querySelector(`input[value="${method}"]`).checked = true;
+            document.querySelector('input[value="' + method + '"]').checked = true;
             
             // Update visual selection
             document.querySelectorAll('.payment-method').forEach(pm => pm.classList.remove('selected'));
@@ -311,21 +397,20 @@
                 const bookingRef = 'TIX' + Date.now().toString().slice(-6);
                 
                 const seatsHtml = bookingData.selectedSeats.map(seat => 
-                    `<span class="seat-tag">${seat.number}</span>`
+                    '<span class="seat-tag">' + seat.number + '</span>'
                 ).join('');
                 
-                ticketDetails.innerHTML = `
-                    <p><strong>Booking Reference:</strong> ${bookingRef}</p>
-                    <p><strong>Movie:</strong> ${bookingData.movieTitle}</p>
-                    <p><strong>Theater:</strong> Theater ${bookingData.theaterId}</p>
-                    <p><strong>Date & Time:</strong> January 20, 2024 - ${bookingData.showtime}</p>
-                    <p><strong>Seats:</strong> ${seatsHtml}</p>
-                    <p><strong>Total Paid:</strong> ${bookingData.totalPrice.toLocaleString()} VNĐ</p>
-                    <p><strong>Payment Method:</strong> ${selectedPayment.charAt(0).toUpperCase() + selectedPayment.slice(1)}</p>
-                    <p style="margin-top: 15px; font-size: 0.9rem; color: #ddd;">
-                        <i class="icofont icofont-info-circle"></i> Please arrive 15 minutes before showtime. Bring this confirmation.
-                    </p>
-                `;
+                ticketDetails.innerHTML = 
+                    '<p><strong>Booking Reference:</strong> ' + bookingRef + '</p>' +
+                    '<p><strong>Movie:</strong> ' + bookingData.movieTitle + '</p>' +
+                    '<p><strong>Theater:</strong> Theater ' + bookingData.theaterId + '</p>' +
+                    '<p><strong>Date & Time:</strong> January 20, 2024 - ' + bookingData.showtime + '</p>' +
+                    '<p><strong>Seats:</strong> ' + seatsHtml + '</p>' +
+                    '<p><strong>Total Paid:</strong> ' + bookingData.totalPrice.toLocaleString() + ' VNĐ</p>' +
+                    '<p><strong>Payment Method:</strong> ' + selectedPayment.charAt(0).toUpperCase() + selectedPayment.slice(1) + '</p>' +
+                    '<p style="margin-top: 15px; font-size: 0.9rem; color: #ddd;">' +
+                        '<i class="icofont icofont-info-circle"></i> Please arrive 15 minutes before showtime. Bring this confirmation.' +
+                    '</p>';
                 
                 successMessage.style.display = 'block';
                 

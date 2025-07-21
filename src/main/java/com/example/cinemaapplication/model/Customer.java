@@ -8,18 +8,16 @@ public class Customer {
     private String name;
     private String phoneNumber;
     private String email;
-    private String bookingMethod; // online / offline
     private Timestamp createdAt;
 
     public Customer() {
     }
 
-    public Customer(int customerId, String name, String phoneNumber, String email, String bookingMethod, Timestamp createdAt) {
+    public Customer(int customerId, String name, String phoneNumber, String email, Timestamp createdAt) {
         this.customerId = customerId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.bookingMethod = bookingMethod;
         this.createdAt = createdAt;
     }
 
@@ -55,13 +53,7 @@ public class Customer {
         this.email = email;
     }
 
-    public String getBookingMethod() {
-        return bookingMethod;
-    }
 
-    public void setBookingMethod(String bookingMethod) {
-        this.bookingMethod = bookingMethod;
-    }
 
     public Timestamp getCreatedAt() {
         return createdAt;

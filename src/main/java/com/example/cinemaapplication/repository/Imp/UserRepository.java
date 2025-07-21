@@ -116,6 +116,29 @@ public class UserRepository extends BaseRepository {
     }
 
 
+    // Get customer ID or employee ID from username based on role
+    public Integer getUserIdFromUsername(String username, String role) {
+        if ("admin".equals(role)) {
+            return null; // Admin doesn't have customer_id or employee_id
+        }
+        
+        String query = "SELECT ref_id FROM User WHERE username = ? AND role = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            
+            ps.setString(1, username);
+            ps.setString(2, role);
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("ref_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

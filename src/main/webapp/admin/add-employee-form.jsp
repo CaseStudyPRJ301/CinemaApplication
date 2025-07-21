@@ -34,6 +34,8 @@
             box-shadow: 4px 0 15px rgba(0,0,0,0.3);
             z-index: 1000;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
         
         .sidebar-header {
@@ -82,6 +84,9 @@
         /* Navigation Styles */
         .sidebar-nav {
             padding: 20px 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .nav-item {
@@ -104,6 +109,17 @@
             border-left-color: #eb315a;
             color: #fff;
             text-decoration: none;
+        }
+        
+        /* Logout specific styling */
+        .logout-nav {
+            color: #ff6b6b !important;
+        }
+        
+        .logout-nav:hover {
+            background: rgba(255, 107, 107, 0.1) !important;
+            border-left-color: #ff6b6b !important;
+            color: #fff !important;
         }
         
         .nav-icon {
@@ -418,7 +434,7 @@
                  grid-template-columns: 1fr;
                  gap: 20px;
              }
-         }
+        }
     </style>
 </head>
 <body>
@@ -444,42 +460,32 @@
                     Dashboard
                 </a>
             </div>
-            <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin?action=manage-customers" class="nav-link">
-                    <i class="bi bi-people nav-icon"></i>
-                    Manage Customers
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin?action=manage-movies" class="nav-link">
-                    <i class="bi bi-film nav-icon"></i>
-                    Manage Movies
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin?action=manage-theaters" class="nav-link">
-                    <i class="bi bi-building nav-icon"></i>
-                    Manage Theaters
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin?action=manage-employees" class="nav-link active">
-                    <i class="bi bi-person-badge nav-icon"></i>
-                    Manage Employees
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin?action=manage-tickets" class="nav-link">
-                    <i class="bi bi-ticket-perforated nav-icon"></i>
-                    Manage Tickets
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin?action=reports" class="nav-link">
-                    <i class="bi bi-graph-up nav-icon"></i>
-                    Reports
-                </a>
-            </div>
+                         <div class="nav-item">
+                 <a href="${pageContext.request.contextPath}/admin?action=manage-employees" class="nav-link active">
+                     <i class="bi bi-person-badge nav-icon"></i>
+                     Manage Employees
+                 </a>
+             </div>
+             <div class="nav-item">
+                 <a href="${pageContext.request.contextPath}/admin?action=manage-customers" class="nav-link">
+                     <i class="bi bi-people nav-icon"></i>
+                     Manage Customers
+                 </a>
+             </div>
+             <div class="nav-item">
+                 <a href="${pageContext.request.contextPath}/admin?action=reports" class="nav-link">
+                     <i class="bi bi-graph-up nav-icon"></i>
+                     Reports
+                 </a>
+             </div>
+             
+             <!-- Logout at bottom -->
+             <div class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                 <a href="${pageContext.request.contextPath}/cinema?action=logout" class="nav-link logout-nav">
+                     <i class="bi bi-box-arrow-right nav-icon"></i>
+                     Logout
+                 </a>
+             </div>
         </nav>
     </div>
     
@@ -497,7 +503,6 @@
                                          <span>Add Employee</span>
                 </div>
             </div>
-            <a href="${pageContext.request.contextPath}/cinema?action=logout" class="btn-logout">Logout</a>
         </div>
         
         <!-- Form Container -->
@@ -550,7 +555,7 @@
                            <i class="bi bi-x-circle validation-icon error"></i>
                             <div class="error-message" id="username-error"></div>
                         </div>
-                  </div>
+        </div>
                   
                                       <div class="form-group" id="password-group">
                         <label for="password" class="form-label">Password <span class="required">*</span></label>
@@ -558,7 +563,7 @@
                         <i class="bi bi-check-circle validation-icon success"></i>
                         <i class="bi bi-x-circle validation-icon error"></i>
                         <div class="error-message" id="password-error"></div>
-                    </div>
+        </div>
                 
                                  <button type="submit" class="btn-submit" id="submitBtn">
                                            <i class="bi bi-plus-circle me-2"></i>Add Employee
@@ -568,7 +573,7 @@
                  </a>
             </form>
         </div>
-    </div>
+</div>
     
     <script>
         // Form validation
@@ -584,9 +589,12 @@
                  message: 'Full name cannot contain numbers and special characters'
              },
              phone: {
-                 pattern: /^[0-9]{10,11}$/,
-                 message: 'Phone number cannot be filled with letters and characters'
-             },
+                pattern: /^[0-9]+$/,
+                minLength: 10,
+                maxLength: 11,
+                lengthMessage: "Phone number must be 10-11 digits",
+                patternMessage: "Phone number cannot be filled with letters and characters"
+            },
              email: {
                  pattern: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
                  message: 'Email must have @gmail.com'
@@ -617,21 +625,37 @@
              const trimmedValue = value ? value.trim() : '';
              
              if (trimmedValue !== '') {
-                 // Pattern check
-                 if (rule.pattern && !rule.pattern.test(trimmedValue)) {
-                     showError(field, errorElement, rule.message);
-                     return false;
+                 // Special validation for phone
+                 if (fieldName === 'phone') {
+                     // First check if contains non-digits
+                     if (!rule.pattern.test(trimmedValue)) {
+                         showError(field, errorElement, rule.patternMessage);
+                         return false;
+                     }
+                     // Then check length
+                     if (trimmedValue.length < rule.minLength || trimmedValue.length > rule.maxLength) {
+                         showError(field, errorElement, rule.lengthMessage);
+                         return false;
+                     }
                  }
-                 
-                 // Length checks
-                 if (rule.minLength && trimmedValue.length < rule.minLength) {
-                     showError(field, errorElement, rule.message);
-                     return false;
-                 }
-                 
-                 if (rule.maxLength && trimmedValue.length > rule.maxLength) {
-                     showError(field, errorElement, rule.message);
-                     return false;
+                 // Standard validation for other fields
+                 else {
+                     // Pattern check
+                     if (rule.pattern && !rule.pattern.test(trimmedValue)) {
+                         showError(field, errorElement, rule.message);
+                         return false;
+                     }
+                     
+                     // Length checks
+                     if (rule.minLength && trimmedValue.length < rule.minLength) {
+                         showError(field, errorElement, rule.message);
+                         return false;
+                     }
+                     
+                     if (rule.maxLength && trimmedValue.length > rule.maxLength) {
+                         showError(field, errorElement, rule.message);
+                         return false;
+                     }
                  }
                  
                  // Show success for valid input

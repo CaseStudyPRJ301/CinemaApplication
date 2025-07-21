@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Employees - Cinema Management</title>
+    <title>Manage Customers - Cinema Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -183,27 +184,6 @@
             margin: 0;
         }
         
-        .btn-add {
-            background: linear-gradient(135deg, #eb315a, #c340ca);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-        }
-        
-        .btn-add:hover {
-            background: linear-gradient(135deg, #d12851, #a835b8);
-            color: white;
-            text-decoration: none;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(235,49,90,0.4);
-        }
-        
         /* Data Table */
         .data-table {
             background: linear-gradient(135deg, #1a1d29, #13151f);
@@ -249,7 +229,7 @@
             transform: translateY(-1px);
         }
         
-        .employee-id {
+        .customer-id {
             background: linear-gradient(90deg, #eb315a, #c340ca);
             color: white;
             padding: 4px 8px;
@@ -257,6 +237,8 @@
             font-size: 12px;
             font-weight: 600;
         }
+        
+
         
         /* Action Buttons */
         .action-btn {
@@ -273,27 +255,14 @@
             margin-right: 8px;
         }
         
-        .btn-edit {
-            background: rgba(235, 49, 90, 0.15);
-            color: #eb315a;
-            border: 1px solid rgba(235, 49, 90, 0.3);
+        .btn-view {
+            background: rgba(33, 150, 243, 0.15);
+            color: #2196f3;
+            border: 1px solid rgba(33, 150, 243, 0.3);
         }
         
-        .btn-edit:hover {
-            background: rgba(235, 49, 90, 0.25);
-            color: #fff;
-            text-decoration: none;
-            transform: translateY(-2px);
-        }
-        
-        .btn-delete {
-            background: rgba(255, 71, 87, 0.15);
-            color: #ff4757;
-            border: 1px solid rgba(255, 71, 87, 0.3);
-        }
-        
-        .btn-delete:hover {
-            background: rgba(255, 71, 87, 0.25);
+        .btn-view:hover {
+            background: rgba(33, 150, 243, 0.25);
             color: #fff;
             text-decoration: none;
             transform: translateY(-2px);
@@ -378,32 +347,32 @@
                     Dashboard
                 </a>
             </div>
-                         <div class="nav-item">
-                 <a href="${pageContext.request.contextPath}/admin?action=manage-employees" class="nav-link active">
-                     <i class="bi bi-person-badge nav-icon"></i>
-                     Manage Employees
-                 </a>
-             </div>
-             <div class="nav-item">
-                 <a href="${pageContext.request.contextPath}/admin?action=manage-customers" class="nav-link">
-                     <i class="bi bi-people nav-icon"></i>
-                     Manage Customers
-                 </a>
-             </div>
-             <div class="nav-item">
-                 <a href="${pageContext.request.contextPath}/admin?action=reports" class="nav-link">
-                     <i class="bi bi-graph-up nav-icon"></i>
-                     Reports
-                 </a>
-             </div>
-             
-             <!-- Logout at bottom -->
-             <div class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-                 <a href="${pageContext.request.contextPath}/cinema?action=logout" class="nav-link logout-nav">
-                     <i class="bi bi-box-arrow-right nav-icon"></i>
-                     Logout
-                 </a>
-             </div>
+            <div class="nav-item">
+                <a href="${pageContext.request.contextPath}/admin?action=manage-employees" class="nav-link">
+                    <i class="bi bi-person-badge nav-icon"></i>
+                    Manage Employees
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="${pageContext.request.contextPath}/admin?action=manage-customers" class="nav-link active">
+                    <i class="bi bi-people nav-icon"></i>
+                    Manage Customers
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="${pageContext.request.contextPath}/admin?action=reports" class="nav-link">
+                    <i class="bi bi-graph-up nav-icon"></i>
+                    Reports
+                </a>
+            </div>
+            
+            <!-- Logout at bottom -->
+            <div class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                <a href="${pageContext.request.contextPath}/cinema?action=logout" class="nav-link logout-nav">
+                    <i class="bi bi-box-arrow-right nav-icon"></i>
+                    Logout
+                </a>
+            </div>
         </nav>
     </div>
     
@@ -412,57 +381,52 @@
         <!-- Header -->
         <div class="content-header">
             <div>
-                <h1 style="color: #fff; margin: 0; font-size: 24px;">Employee Management</h1>
+                <h1 style="color: #fff; margin: 0; font-size: 24px;">Customer Management</h1>
                 <div class="breadcrumb-nav">
                     <a href="${pageContext.request.contextPath}/admin">Dashboard</a>
                     <span>></span>
-                    <span>Manage Employees</span>
+                    <span>Manage Customers</span>
                 </div>
             </div>
         </div>
         
-        <!-- Employee Management Section -->
+        <!-- Customer Management Section -->
         <div class="content-section">
             <div class="section-header">
-                <h2 class="section-title">Employee List</h2>
-                <a href="${pageContext.request.contextPath}/admin?action=add-employee" class="btn-add">
-                    <i class="bi bi-plus-circle me-2"></i>Add New Employee
-                </a>
+                <h2 class="section-title">Customer List</h2>
             </div>
             
             <div class="data-table">
                 <c:choose>
-                    <c:when test="${not empty employeeList}">
+                    <c:when test="${not empty customerList}">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Employee Name</th>
+                                    <th>Customer Name</th>
                                     <th>Phone Number</th>
                                     <th>Email Address</th>
+                                    <th>Created Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="emp" items="${employeeList}">
+                                <c:forEach var="customer" items="${customerList}">
                                     <tr>
                                         <td>
-                                            <span class="employee-id">#${emp.employeeId}</span>
+                                            <span class="customer-id">#${customer.customerId}</span>
                                         </td>
                                         <td>
-                                            <strong style="color: #fff;">${emp.name}</strong>
+                                            <strong style="color: #fff;">${customer.name}</strong>
                                         </td>
-                                        <td>${emp.phone}</td>
-                                        <td>${emp.email}</td>
+                                        <td>${customer.phoneNumber}</td>
+                                        <td>${customer.email}</td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/admin?action=edit-employee&id=${emp.employeeId}" 
-                                               class="action-btn btn-edit">
-                                               <i class="bi bi-pencil-square"></i> Edit
-                                            </a>
-                                            <a href="${pageContext.request.contextPath}/admin?action=delete-employee&id=${emp.employeeId}" 
-                                               class="action-btn btn-delete"
-                                               onclick="return confirm('Are you sure you want to delete this employee?')">
-                                               <i class="bi bi-trash"></i> Delete
+                                            <fmt:formatDate value="${customer.createdAt}" pattern="MMM dd, yyyy"/>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="action-btn btn-view">
+                                                <i class="bi bi-eye"></i> View
                                             </a>
                                         </td>
                                     </tr>
@@ -472,9 +436,9 @@
                     </c:when>
                     <c:otherwise>
                         <div class="empty-state">
-                            <i class="bi bi-person-x"></i>
-                            <h3>No Employees Found</h3>
-                            <p>There are no employees in the system yet.</p>
+                            <i class="bi bi-people"></i>
+                            <h3>No Customers Found</h3>
+                            <p>There are no customers in the system yet.</p>
                         </div>
                     </c:otherwise>
                 </c:choose>
@@ -482,4 +446,4 @@
         </div>
     </div>
 </body>
-</html>
+</html> 

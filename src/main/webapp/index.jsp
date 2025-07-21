@@ -29,6 +29,9 @@
 		<link rel="stylesheet" type="text/css" href="assets/css/style.css" media="all" />
 		<!-- Responsive CSS -->
 		<link rel="stylesheet" type="text/css" href="assets/css/responsive.css" media="all" />
+		
+
+		
 		<!--[if lt IE 9]>
 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -84,7 +87,7 @@
 										<li><a href="movie-details.html">Movie Details</a></li>
 									</ul>
 								</li>
-                                <li><a class="theme-btn" href="#"><i class="icofont icofont-ticket"></i> Tickets</a></li>
+                                							<li><a class="theme-btn" href="#"><i class="icofont icofont-ticket"></i> Tickets</a></li>
                             </ul>
 					    </div>
 					</div>
@@ -154,9 +157,34 @@
 						</div>
 					</form>
 				</div>
+
+				<!-- Personal Info Form -->
+				<div id="personalInfoForm" style="display: none;">
+					<h2>COMPLETE YOUR PROFILE</h2>
+					<p style="color: #666; font-size: 14px; margin-bottom: 20px;">Please provide your personal information to complete registration.</p>
+					<form action="cinema?action=complete-profile" method="post" onsubmit="return validatePersonalInfoForm()">
+						<input type="hidden" name="source" value="home" />
+						<h6>FULL NAME</h6>
+						<input type="text" id="customer-name" name="name" required />
+						<div class="error-message" id="name-error" style="display: none; color: red; font-size: 12px; margin-top: 5px;"></div>
+						<h6>PHONE NUMBER</h6>
+						<input type="tel" id="customer-phone" name="phone" required />
+						<div class="error-message" id="phone-error" style="display: none; color: red; font-size: 12px; margin-top: 5px;"></div>
+						<h6>EMAIL ADDRESS</h6>
+						<input type="email" id="customer-email" name="email" required />
+						<div class="error-message" id="email-error" style="display: none; color: red; font-size: 12px; margin-top: 5px;"></div>
+						<button type="submit" class="theme-btn" style="border: none; background: none; color: inherit; width: 100%; text-align: center;">COMPLETE REGISTRATION</button>
+						<div class="login-signup" style="margin-top: 15px;">
+							<span onclick="toggleAuthForms()" style="cursor: pointer; color: #008aff; font-size: 14px;">Back to Login</span>
+						</div>
+					</form>
+				</div>
 				
 			</div>
 		</div>
+		
+
+		
 		<div class="buy-ticket">
 			<div class="container">
 				<div class="buy-ticket-area">
@@ -390,107 +418,48 @@
 		<!-- hero area start -->
 		<section class="hero-area" id="home">
 			<div class="container">
-				<div class="hero-area-slider">
-					<div class="row hero-area-slide">
-						<div class="col-lg-6 col-md-5">
-							<div class="hero-area-content">
-								<img src="assets/img/thesaart-squid-game-concept-art-thesaart.png" alt="about" />
-							</div>
-						</div>
-						<div class="col-lg-6 col-md-7">
-							<div class="hero-area-content pr-50">
-								<h2>Squid Game</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-								<p class="movie-description">
-									<span class="description-short">Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits with deadly high stakes...</span>
-									<span class="description-full" style="display: none;">Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits with deadly high stakes. A survival game that has a 45.6 billion-won prize at stake. The series revolves around a contest where 456 players, all of whom are in deep financial hardship, risk their lives to play a series of deadly children's games for the chance to win a ₩45.6 billion prize.</span>
-									<span class="read-more-btn" onclick="toggleDescription(this)" style="color: #eb315a; cursor: pointer; margin-left: 5px;">Read more</span>
-								</p>
-								<div class="slide-trailor">
-									<a class="theme-btn theme-btn2" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-play"></i> Tickets</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row hero-area-slide">
-						<div class="col-lg-6 col-md-5">
-							<div class="hero-area-content">
-								<img src="assets/img/slide1.png" alt="about" />
-							</div>
-						</div>
-						<div class="col-lg-6 col-md-7">
-							<div class="hero-area-content pr-50">
-								<h2>Last Avatar</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-								<p class="movie-description">
-									<span class="description-short">A young airbender must master all four elements to save the world from the Fire Nation's tyranny...</span>
-									<span class="description-full" style="display: none;">A young airbender must master all four elements to save the world from the Fire Nation's tyranny. Follow Aang and his friends as they journey across the world to defeat the Fire Lord and restore balance to the Avatar world. An epic adventure filled with martial arts, elemental magic, and timeless themes of friendship and courage.</span>
-									<span class="read-more-btn" onclick="toggleDescription(this)" style="color: #eb315a; cursor: pointer; margin-left: 5px;">Read more</span>
-								</p>
-								<div class="slide-trailor">
-									<a class="theme-btn theme-btn2" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-play"></i> Tickets</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row hero-area-slide">
-						<div class="col-lg-6 col-md-5">
-							<div class="hero-area-content">
-								<img src="assets/img/slide3.png" alt="about" />
-							</div>
-						</div>
-						<div class="col-lg-6 col-md-7">
-							<div class="hero-area-content pr-50">
-								<h2>The Deer God</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-								<p class="movie-description">
-									<span class="description-short">A mystical forest deity protects the balance between nature and civilization in this epic fantasy adventure...</span>
-									<span class="description-full" style="display: none;">A mystical forest deity protects the balance between nature and civilization in this epic fantasy adventure. When humans threaten the sacred forest, the Deer God must make difficult choices to preserve the harmony between all living things. A visually stunning tale of environmental protection and spiritual awakening.</span>
-									<span class="read-more-btn" onclick="toggleDescription(this)" style="color: #eb315a; cursor: pointer; margin-left: 5px;">Read more</span>
-								</p>
-								<div class="slide-trailor">
-									<a class="theme-btn theme-btn2" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-play"></i> Tickets</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="hero-area-thumb">
-					<div class="thumb-prev">
+				<div class="hero-area-slider owl-carousel owl-theme">
+					<div class="hero-slide-item">
 						<div class="row hero-area-slide">
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-md-5">
 								<div class="hero-area-content">
-									<img src="assets/img/slide3.png" alt="about" />
+									<img src="assets/img/thesaart-squid-game-concept-art-thesaart.png" alt="Squid Game" />
 								</div>
 							</div>
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-md-7">
+								<div class="hero-area-content pr-50">
+									<h2>Squid Game</h2>
+									<div class="review">
+										<div class="author-review">
+											<i class="icofont icofont-star"></i>
+											<i class="icofont icofont-star"></i>
+											<i class="icofont icofont-star"></i>
+											<i class="icofont icofont-star"></i>
+											<i class="icofont icofont-star"></i>
+										</div>
+										<h4>180k voters</h4>
+									</div>
+									<p class="movie-description">
+										<span class="description-short">Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits with deadly high stakes...</span>
+										<span class="description-full" style="display: none;">Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits with deadly high stakes. A survival game that has a 45.6 billion-won prize at stake. The series revolves around a contest where 456 players, all of whom are in deep financial hardship, risk their lives to play a series of deadly children's games for the chance to win a ₩45.6 billion prize.</span>
+										<span class="read-more-btn" onclick="toggleDescription(this)" style="color: #eb315a; cursor: pointer; margin-left: 5px;">Read more</span>
+									</p>
+									<div class="slide-trailor">
+										<a class="theme-btn theme-btn2" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-play"></i> Tickets</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="hero-slide-item">
+						<div class="row hero-area-slide">
+							<div class="col-lg-6 col-md-5">
+								<div class="hero-area-content">
+									<img src="assets/img/slide1.png" alt="Last Avatar" />
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-7">
 								<div class="hero-area-content pr-50">
 									<h2>Last Avatar</h2>
 									<div class="review">
@@ -515,14 +484,15 @@
 							</div>
 						</div>
 					</div>
-					<div class="thumb-next">
+					
+					<div class="hero-slide-item">
 						<div class="row hero-area-slide">
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-md-5">
 								<div class="hero-area-content">
-									<img src="assets/img/slide1.png" alt="about" />
+									<img src="assets/img/slide3.png" alt="The Deer God" />
 								</div>
 							</div>
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-md-7">
 								<div class="hero-area-content pr-50">
 									<h2>The Deer God</h2>
 									<div class="review">
@@ -548,8 +518,77 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</section><!-- hero area end -->
+		
+		<style>
+		/* Hero Carousel Custom Styling */
+		.hero-area {
+			position: relative;
+		}
+		
+		.hero-area-slider.owl-carousel .owl-item {
+			opacity: 0.8;
+			transform: scale(0.95);
+			transition: all 0.4s ease-in-out;
+		}
+		
+		.hero-area-slider.owl-carousel .owl-item.active {
+			opacity: 1;
+			transform: scale(1);
+		}
+		
+		.hero-area-slider.owl-carousel .owl-item.center {
+			opacity: 1;
+			transform: scale(1.05);
+		}
+		
+
+		
+
+		
+		/* Center focus effect */
+		.hero-area-slider.owl-carousel .owl-stage-outer {
+			overflow: visible;
+		}
+		
+		.hero-area-slider.owl-carousel .owl-stage {
+			display: flex;
+			align-items: center;
+		}
+		
+		/* Smooth transitions */
+		.hero-slide-item {
+			transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		}
+		
+		/* Custom responsive */
+		@media (max-width: 768px) {
+
+		}
+		
+		/* Additional animation effects */
+		.hero-area-slider.owl-carousel .owl-item:not(.active) {
+			opacity: 0.6;
+		}
+		
+		.hero-area-slider.owl-carousel .owl-item.active .hero-area-content {
+			animation: fadeInUp 0.8s ease-out;
+		}
+		
+		@keyframes fadeInUp {
+			from {
+				opacity: 0.7;
+				transform: translateY(30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		</style>
+		
 		<!-- portfolio section start -->
 		<section class="portfolio-area pt-60">
 			<div class="container">
@@ -572,18 +611,18 @@
 				</div>
 				<hr />
 				<div class="row">
-					<div class="col-lg-9">
+					<div class="col-lg-12">
 						<div class="row portfolio-item">
-							<div class="col-md-4 col-sm-6 soon released">
+							<div class="col-md-4 col-sm-4 col-xs-6 soon released">
 								<div class="single-portfolio">
 									<div class="single-portfolio-img">
 										<img src="assets/img/portfolio/portfolio1.png" alt="portfolio" />
-										<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
+										<a href="https://www.youtube.com/watch?v=gCcx85zbxz4" class="popup-youtube">
 											<i class="icofont icofont-ui-play"></i>
 										</a>
 									</div>
 									<div class="portfolio-content">
-										<h2>Boyz II Men</h2>
+										<h2>Blade Runner 2049</h2>
 										<div class="review">
 											<div class="author-review">
 												<i class="icofont icofont-star"></i>
@@ -597,16 +636,16 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4 col-sm-6 top">
+							<div class="col-md-4 col-sm-4 col-xs-6 top">
 								<div class="single-portfolio">
 									<div class="single-portfolio-img">
-										<img src="assets/img/portfolio/portfolio2.png" alt="portfolio" />
-										<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
+										<img src="assets/img/portfolio/phim-cuop-bien-vung-caribbean.png" alt="portfolio" />
+										<a href="https://www.youtube.com/watch?v=M2h997WLlCY" class="popup-youtube">
 											<i class="icofont icofont-ui-play"></i>
 										</a>
 									</div>
 									<div class="portfolio-content">
-										<h2>Tale of Revemge</h2>
+										<h2>Pirates of the Caribbean</h2>
 										<div class="review">
 											<div class="author-review">
 												<i class="icofont icofont-star"></i>
@@ -620,16 +659,16 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4 col-sm-6 soon">
+							<div class="col-md-4 col-sm-4 col-xs-6 soon">
 								<div class="single-portfolio">
 									<div class="single-portfolio-img">
 										<img src="assets/img/portfolio/portfolio3.png" alt="portfolio" />
-										<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
+										<a href="https://www.youtube.com/watch?v=9xfxWYC8XKc" class="popup-youtube">
 											<i class="icofont icofont-ui-play"></i>
 										</a>
 									</div>
 									<div class="portfolio-content">
-										<h2>The Lost City of Z</h2>
+										<h2>The Lost Ciy of Z</h2>
 										<div class="review">
 											<div class="author-review">
 												<i class="icofont icofont-star"></i>
@@ -643,16 +682,16 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4 col-sm-6 top released">
+							<div class="col-md-4 col-sm-4 col-xs-6 top released">
 								<div class="single-portfolio">
 									<div class="single-portfolio-img">
 										<img src="assets/img/portfolio/portfolio4.png" alt="portfolio" />
-										<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
+										<a href="https://www.youtube.com/watch?v=o6k1ChY8kDg" class="popup-youtube">
 											<i class="icofont icofont-ui-play"></i>
 										</a>
 									</div>
 									<div class="portfolio-content">
-										<h2>Beast Beauty</h2>
+										<h2>Beauty and the Beast</h2>
 										<div class="review">
 											<div class="author-review">
 												<i class="icofont icofont-star"></i>
@@ -666,11 +705,11 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4 col-sm-6 released">
+							<div class="col-md-4 col-sm-4 col-xs-6 released">
 								<div class="single-portfolio">
 									<div class="single-portfolio-img">
 										<img src="assets/img/portfolio/portfolio5.png" alt="portfolio" />
-										<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
+										<a href="https://www.youtube.com/watch?v=UyjnzhXJlHU" class="popup-youtube">
 											<i class="icofont icofont-ui-play"></i>
 										</a>
 									</div>
@@ -689,16 +728,16 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4 col-sm-6 soon top">
+							<div class="col-md-4 col-sm-4 col-xs-6 soon top">
 								<div class="single-portfolio">
 									<div class="single-portfolio-img">
 										<img src="assets/img/portfolio/portfolio6.png" alt="portfolio" />
-										<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
+										<a href="https://www.youtube.com/watch?v=E4jsI2eskmk" class="popup-youtube">
 											<i class="icofont icofont-ui-play"></i>
 										</a>
 									</div>
 									<div class="portfolio-content">
-										<h2>Last Hero</h2>
+										<h2>Last Hero in China</h2>
 										<div class="review">
 											<div class="author-review">
 												<i class="icofont icofont-star"></i>
@@ -712,14 +751,6 @@
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 text-center text-lg-left">
-					    <div class="portfolio-sidebar">
-							<img src="assets/img/sidebar/sidebar1.png" alt="sidebar" />
-							<img src="assets/img/sidebar/sidebar2.png" alt="sidebar" />
-							<img src="assets/img/sidebar/sidebar3.png" alt="sidebar" />
-							<img src="assets/img/sidebar/sidebar4.png" alt="sidebar" />
 						</div>
 					</div>
 				</div>
@@ -943,6 +974,127 @@
 		<!-- main JS -->
 		<script src="assets/js/main.js"></script>
 		
+		<!-- Hero Carousel JavaScript -->
+		<script>
+		// Hero Carousel Initialization
+		var heroCarousel;
+		
+		$(document).ready(function() {
+			heroCarousel = $('.hero-area-slider').owlCarousel({
+				items: 1,
+				loop: true,
+				center: false,
+				margin: 0,
+				autoplay: true,
+				autoplayTimeout: 5000, // 5 seconds
+				autoplayHoverPause: true,
+				autoplaySpeed: 800,
+				smartSpeed: 1000,
+				animateOut: 'slideOutLeft',
+				animateIn: 'slideInRight',
+				nav: false,
+				dots: false,
+				stagePadding: 0,
+				responsive: {
+					0: {
+						items: 1,
+						stagePadding: 0
+					},
+					768: {
+						items: 1,
+						stagePadding: 0
+					},
+					1000: {
+						items: 1,
+						stagePadding: 0
+					}
+				},
+				onTranslate: function(event) {
+					// Add transition effects
+					$('.hero-slide-item').removeClass('center');
+					setTimeout(function() {
+						$('.owl-item.active .hero-slide-item').addClass('center');
+					}, 100);
+				}
+			});
+			
+
+			
+
+			
+			// Touch swipe for mobile with autoplay pause/resume
+			var startX = 0;
+			var startY = 0;
+			var swipeThreshold = 50;
+			
+			$('.hero-area-slider').on('touchstart', function(e) {
+				startX = e.originalEvent.touches[0].pageX;
+				startY = e.originalEvent.touches[0].pageY;
+				
+				// Pause autoplay when user starts interacting
+				heroCarousel.trigger('stop.owl.autoplay');
+			});
+			
+			$('.hero-area-slider').on('touchend', function(e) {
+				if (startX === 0) {
+					// Resume autoplay after 3 seconds if no swipe detected
+					setTimeout(function() {
+						heroCarousel.trigger('play.owl.autoplay');
+					}, 3000);
+					return;
+				}
+				
+				var endX = e.originalEvent.changedTouches[0].pageX;
+				var endY = e.originalEvent.changedTouches[0].pageY;
+				var diffX = startX - endX;
+				var diffY = startY - endY;
+				
+				// Check if horizontal swipe is dominant
+				if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
+					e.preventDefault();
+					
+					if (diffX > 0) {
+						heroCarousel.trigger('next.owl.carousel', [800]);
+					} else {
+						heroCarousel.trigger('prev.owl.carousel', [800]);
+					}
+					
+					// Resume autoplay after 5 seconds of inactivity
+					setTimeout(function() {
+						heroCarousel.trigger('play.owl.autoplay');
+					}, 5000);
+				} else {
+					// Resume autoplay immediately if no valid swipe
+					setTimeout(function() {
+						heroCarousel.trigger('play.owl.autoplay');
+					}, 3000);
+				}
+				
+				startX = 0;
+				startY = 0;
+			});
+			
+			// Hover pause/play with smooth transition
+			$('.hero-area').hover(
+				function() {
+					// Pause autoplay on hover
+					heroCarousel.trigger('stop.owl.autoplay');
+				},
+				function() {
+					// Resume autoplay after 2 seconds when mouse leaves
+					setTimeout(function() {
+						heroCarousel.trigger('play.owl.autoplay');
+					}, 2000);
+				}
+			);
+			
+			// Auto-start autoplay after page load
+			setTimeout(function() {
+				heroCarousel.trigger('play.owl.autoplay');
+			}, 1000);
+		});
+		</script>
+		
 		<!-- Custom JavaScript for Auth Forms -->
 		<script>
 			// Toggle between login and signup forms
@@ -1013,6 +1165,79 @@
 				
 				return true;
 			}
+
+			function validatePersonalInfoForm() {
+				const name = document.getElementById('customer-name').value.trim();
+				const phone = document.getElementById('customer-phone').value.trim();
+				const email = document.getElementById('customer-email').value.trim();
+				
+				let isValid = true;
+				
+				// Clear previous errors
+				clearAllErrors();
+				
+				// Name validation
+				if (name.length < 2) {
+					showInputError('customer-name', 'name-error', 'Full name must be at least 2 characters long');
+					isValid = false;
+				} else if (!/^[a-zA-Z\s]+$/.test(name)) {
+					showInputError('customer-name', 'name-error', 'Full name cannot contain numbers or special characters');
+					isValid = false;
+				}
+				
+				// Phone validation
+				if (!/^[0-9]{10,11}$/.test(phone)) {
+					showInputError('customer-phone', 'phone-error', 'Phone number must be 10-11 digits');
+					isValid = false;
+				}
+				
+				// Email validation
+				if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+					showInputError('customer-email', 'email-error', 'Email must be a valid @gmail.com address');
+					isValid = false;
+				}
+				
+				if (!isValid) {
+					return false;
+				}
+				
+				// Show loading state
+				const submitBtn = document.querySelector('#personalInfoForm button[type="submit"]');
+				const originalText = submitBtn.textContent;
+				submitBtn.textContent = 'Completing registration...';
+				submitBtn.disabled = true;
+				
+				// Reset button state after delay (in case of errors)
+				setTimeout(function() {
+					submitBtn.textContent = originalText;
+					submitBtn.disabled = false;
+				}, 5000);
+				
+				return true;
+			}
+
+			// Function to show personal info form after successful signup
+			function showPersonalInfoForm() {
+				console.log('showPersonalInfoForm called');
+				document.getElementById('loginForm').style.display = 'none';
+				document.getElementById('signupForm').style.display = 'none';
+				document.getElementById('personalInfoForm').style.display = 'block';
+				console.log('Personal info form display set to block');
+			}
+
+			// Function to open auth popup
+			function openAuthPopup() {
+				console.log('openAuthPopup called');
+				const loginArea = document.querySelector('.login-area');
+				if (loginArea) {
+					console.log('Login area found, adding active class');
+					// Clear any existing inline styles first
+					loginArea.style.cssText = '';
+					loginArea.classList.add('active');
+				} else {
+					console.log('Login area not found!');
+				}
+			}
 			
 			// Show input error
 			function showInputError(inputId, errorId, message) {
@@ -1076,6 +1301,18 @@
 				const urlParams = new URLSearchParams(window.location.search);
 				const message = urlParams.get('message');
 				const type = urlParams.get('type');
+				const showPersonalInfo = urlParams.get('showPersonalInfo');
+				
+				// Check if we need to show personal info form after signup
+				if (showPersonalInfo === 'true') {
+					console.log('Showing personal info form...');
+					// Small delay to ensure page is loaded
+					setTimeout(function() {
+						openAuthPopup();
+						showPersonalInfoForm();
+						console.log('Personal info form should be visible now');
+					}, 200);
+				}
 				
 				if (message) {
 					const decodedMessage = decodeURIComponent(message);
@@ -1304,7 +1541,8 @@
 					}, 100);
 				}
 			});
+			
+
 		</script>
 	</body>
-
 </html>
