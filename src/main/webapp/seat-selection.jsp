@@ -84,16 +84,14 @@
         }
         
         .screen {
-            background: linear-gradient(135deg, #eb315a, #ff6b9d);
+            width: 520px;
             height: 8px;
+            background: linear-gradient(135deg, #eb315a, #ff6b9d);
             border-radius: 20px;
             margin: 0 auto 40px;
-            width: 70%;
             position: relative;
         }
-        
-        .screen::before {
-            content: "SCREEN";
+        .screen-label {
             position: absolute;
             top: -30px;
             left: 50%;
@@ -103,18 +101,34 @@
             font-size: 1.2rem;
             letter-spacing: 3px;
         }
-        
-        .seat-map {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-        
         .seat-row {
             display: flex;
-            gap: 8px;
             align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
+            gap: 32px; /* Tăng khoảng cách giữa các nhóm */
+        }
+        .side-group {
+            display: flex;
+            gap: 8px;
+        }
+        .center-group {
+            display: flex;
+            gap: 8px;
+        }
+        .seat {
+            width: 44px;
+            height: 44px;
+            border-radius: 4px;
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .couple-row {
+            margin-top: 30px;
         }
         
         .row-label {
@@ -123,21 +137,7 @@
             font-weight: bold;
             color: #eb315a;
             font-size: 1.1rem;
-        }
-        
-        .seat {
-            width: 35px;
-            height: 35px;
-            border: 2px solid;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-            user-select: none;
+            margin-right: 6px;
         }
         
         /* Normal seats - 3 hàng đầu */
@@ -329,120 +329,137 @@
         </div>
         
         <div class="theater-container">
-            <div class="screen"></div>
+            <div class="screen">
+                <span class="screen-label">SCREEN</span>
+            </div>
             
             <div class="seat-map">
-                <!-- Row A: Normal seats -->
+                <!-- Các hàng A-G với 3 nhóm ghế -->
                 <div class="seat-row">
                     <div class="row-label">A</div>
-                    <div class="seat normal" data-seat-id="<%= seatOffset + 1 %>" data-seat-position="A1" data-price="50000">1</div>
-                    <div class="seat normal" data-seat-id="<%= seatOffset + 2 %>" data-seat-position="A2" data-price="50000">2</div>
-                    <div class="seat normal" data-seat-id="<%= seatOffset + 3 %>" data-seat-position="A3" data-price="50000">3</div>
-                    <div class="seat normal" data-seat-id="<%= seatOffset + 4 %>" data-seat-position="A4" data-price="50000">4</div>
-                    <div class="gap"></div>
-                    <div class="seat normal" data-seat-id="<%= seatOffset + 5 %>" data-seat-position="A5" data-price="50000">5</div>
-                    <div class="seat normal" data-seat-id="<%= seatOffset + 6 %>" data-seat-position="A6" data-price="50000">6</div>
-                    <div class="seat normal" data-seat-id="<%= seatOffset + 7 %>" data-seat-position="A7" data-price="50000">7</div>
-                    <div class="seat normal" data-seat-id="<%= seatOffset + 8 %>" data-seat-position="A8" data-price="50000">8</div>
+                    <div class="side-group">
+                        <div class="seat normal" data-seat-id="<%= seatOffset + 1 %>" data-seat-position="A1" data-price="50000">1</div>
+                        <div class="seat normal" data-seat-id="<%= seatOffset + 2 %>" data-seat-position="A2" data-price="50000">2</div>
+                    </div>
+                    <div class="center-group">
+                        <div class="seat normal" data-seat-id="<%= seatOffset + 3 %>" data-seat-position="A3" data-price="50000">3</div>
+                        <div class="seat normal" data-seat-id="<%= seatOffset + 4 %>" data-seat-position="A4" data-price="50000">4</div>
+                        <div class="seat normal" data-seat-id="<%= seatOffset + 5 %>" data-seat-position="A5" data-price="50000">5</div>
+                        <div class="seat normal" data-seat-id="<%= seatOffset + 6 %>" data-seat-position="A6" data-price="50000">6</div>
+                    </div>
+                    <div class="side-group">
+                        <div class="seat normal" data-seat-id="<%= seatOffset + 7 %>" data-seat-position="A7" data-price="50000">7</div>
+                        <div class="seat normal" data-seat-id="<%= seatOffset + 8 %>" data-seat-position="A8" data-price="50000">8</div>
+                    </div>
                 </div>
-                
-                <!-- Row B: Normal seats -->
                 <div class="seat-row">
                     <div class="row-label">B</div>
-                    <div class="seat normal" data-seat-id="9" data-seat-position="B1" data-price="50000">1</div>
-                    <div class="seat normal" data-seat-id="10" data-seat-position="B2" data-price="50000">2</div>
-                    <div class="seat normal" data-seat-id="11" data-seat-position="B3" data-price="50000">3</div>
-                    <div class="seat normal" data-seat-id="12" data-seat-position="B4" data-price="50000">4</div>
-                    <div class="gap"></div>
-                    <div class="seat normal" data-seat-id="13" data-seat-position="B5" data-price="50000">5</div>
-                    <div class="seat normal" data-seat-id="14" data-seat-position="B6" data-price="50000">6</div>
-                    <div class="seat normal" data-seat-id="15" data-seat-position="B7" data-price="50000">7</div>
-                    <div class="seat normal" data-seat-id="16" data-seat-position="B8" data-price="50000">8</div>
+                    <div class="side-group">
+                        <div class="seat normal" data-seat-id="9" data-seat-position="B1" data-price="50000">1</div>
+                        <div class="seat normal" data-seat-id="10" data-seat-position="B2" data-price="50000">2</div>
+                    </div>
+                    <div class="center-group">
+                        <div class="seat normal" data-seat-id="11" data-seat-position="B3" data-price="50000">3</div>
+                        <div class="seat normal" data-seat-id="12" data-seat-position="B4" data-price="50000">4</div>
+                        <div class="seat normal" data-seat-id="13" data-seat-position="B5" data-price="50000">5</div>
+                        <div class="seat normal" data-seat-id="14" data-seat-position="B6" data-price="50000">6</div>
+                    </div>
+                    <div class="side-group">
+                        <div class="seat normal" data-seat-id="15" data-seat-position="B7" data-price="50000">7</div>
+                        <div class="seat normal" data-seat-id="16" data-seat-position="B8" data-price="50000">8</div>
+                    </div>
                 </div>
-                
-                <!-- Row C: Normal seats -->
                 <div class="seat-row">
                     <div class="row-label">C</div>
-                    <div class="seat normal" data-seat-id="17" data-seat-position="C1" data-price="50000">1</div>
-                    <div class="seat normal" data-seat-id="18" data-seat-position="C2" data-price="50000">2</div>
-                    <div class="seat normal" data-seat-id="19" data-seat-position="C3" data-price="50000">3</div>
-                    <div class="seat normal" data-seat-id="20" data-seat-position="C4" data-price="50000">4</div>
-                    <div class="gap"></div>
-                    <div class="seat normal" data-seat-id="21" data-seat-position="C5" data-price="50000">5</div>
-                    <div class="seat normal" data-seat-id="22" data-seat-position="C6" data-price="50000">6</div>
-                    <div class="seat normal" data-seat-id="23" data-seat-position="C7" data-price="50000">7</div>
-                    <div class="seat normal" data-seat-id="24" data-seat-position="C8" data-price="50000">8</div>
+                    <div class="side-group">
+                        <div class="seat normal" data-seat-id="17" data-seat-position="C1" data-price="50000">1</div>
+                        <div class="seat normal" data-seat-id="18" data-seat-position="C2" data-price="50000">2</div>
+                    </div>
+                    <div class="center-group">
+                        <div class="seat normal" data-seat-id="19" data-seat-position="C3" data-price="50000">3</div>
+                        <div class="seat normal" data-seat-id="20" data-seat-position="C4" data-price="50000">4</div>
+                        <div class="seat normal" data-seat-id="21" data-seat-position="C5" data-price="50000">5</div>
+                        <div class="seat normal" data-seat-id="22" data-seat-position="C6" data-price="50000">6</div>
+                    </div>
+                    <div class="side-group">
+                        <div class="seat normal" data-seat-id="23" data-seat-position="C7" data-price="50000">7</div>
+                        <div class="seat normal" data-seat-id="24" data-seat-position="C8" data-price="50000">8</div>
+                    </div>
                 </div>
-                
-                <div style="height: 20px;"></div>
-                
-                <!-- Row D: VIP seats -->
                 <div class="seat-row">
                     <div class="row-label">D</div>
-                    <div class="seat vip" data-seat-id="25" data-seat-position="D1" data-price="75000">1</div>
-                    <div class="seat vip" data-seat-id="26" data-seat-position="D2" data-price="75000">2</div>
-                    <div class="seat vip" data-seat-id="27" data-seat-position="D3" data-price="75000">3</div>
-                    <div class="seat vip" data-seat-id="28" data-seat-position="D4" data-price="75000">4</div>
-                    <div class="gap"></div>
-                    <div class="seat vip" data-seat-id="29" data-seat-position="D5" data-price="75000">5</div>
-                    <div class="seat vip" data-seat-id="30" data-seat-position="D6" data-price="75000">6</div>
-                    <div class="seat vip" data-seat-id="31" data-seat-position="D7" data-price="75000">7</div>
-                    <div class="seat vip" data-seat-id="32" data-seat-position="D8" data-price="75000">8</div>
+                    <div class="side-group">
+                        <div class="seat vip" data-seat-id="25" data-seat-position="D1" data-price="75000">1</div>
+                        <div class="seat vip" data-seat-id="26" data-seat-position="D2" data-price="75000">2</div>
+                    </div>
+                    <div class="center-group">
+                        <div class="seat vip" data-seat-id="27" data-seat-position="D3" data-price="75000">3</div>
+                        <div class="seat vip" data-seat-id="28" data-seat-position="D4" data-price="75000">4</div>
+                        <div class="seat vip" data-seat-id="29" data-seat-position="D5" data-price="75000">5</div>
+                        <div class="seat vip" data-seat-id="30" data-seat-position="D6" data-price="75000">6</div>
+                    </div>
+                    <div class="side-group">
+                        <div class="seat vip" data-seat-id="31" data-seat-position="D7" data-price="75000">7</div>
+                        <div class="seat vip" data-seat-id="32" data-seat-position="D8" data-price="75000">8</div>
+                    </div>
                 </div>
-                
-                <!-- Row E: VIP seats -->
                 <div class="seat-row">
                     <div class="row-label">E</div>
-                    <div class="seat vip" data-seat-id="33" data-seat-position="E1" data-price="75000">1</div>
-                    <div class="seat vip" data-seat-id="34" data-seat-position="E2" data-price="75000">2</div>
-                    <div class="seat vip" data-seat-id="35" data-seat-position="E3" data-price="75000">3</div>
-                    <div class="seat vip" data-seat-id="36" data-seat-position="E4" data-price="75000">4</div>
-                    <div class="gap"></div>
-                    <div class="seat vip" data-seat-id="37" data-seat-position="E5" data-price="75000">5</div>
-                    <div class="seat vip" data-seat-id="38" data-seat-position="E6" data-price="75000">6</div>
-                    <div class="seat vip" data-seat-id="39" data-seat-position="E7" data-price="75000">7</div>
-                    <div class="seat vip" data-seat-id="40" data-seat-position="E8" data-price="75000">8</div>
+                    <div class="side-group">
+                        <div class="seat vip" data-seat-id="33" data-seat-position="E1" data-price="75000">1</div>
+                        <div class="seat vip" data-seat-id="34" data-seat-position="E2" data-price="75000">2</div>
+                    </div>
+                    <div class="center-group">
+                        <div class="seat vip" data-seat-id="35" data-seat-position="E3" data-price="75000">3</div>
+                        <div class="seat vip" data-seat-id="36" data-seat-position="E4" data-price="75000">4</div>
+                        <div class="seat vip" data-seat-id="37" data-seat-position="E5" data-price="75000">5</div>
+                        <div class="seat vip" data-seat-id="38" data-seat-position="E6" data-price="75000">6</div>
+                    </div>
+                    <div class="side-group">
+                        <div class="seat vip" data-seat-id="39" data-seat-position="E7" data-price="75000">7</div>
+                        <div class="seat vip" data-seat-id="40" data-seat-position="E8" data-price="75000">8</div>
+                    </div>
                 </div>
-                
-                <!-- Row F: VIP seats -->
                 <div class="seat-row">
                     <div class="row-label">F</div>
-                    <div class="seat vip" data-seat-id="41" data-seat-position="F1" data-price="75000">1</div>
-                    <div class="seat vip" data-seat-id="42" data-seat-position="F2" data-price="75000">2</div>
-                    <div class="seat vip" data-seat-id="43" data-seat-position="F3" data-price="75000">3</div>
-                    <div class="seat vip" data-seat-id="44" data-seat-position="F4" data-price="75000">4</div>
-                    <div class="gap"></div>
-                    <div class="seat vip" data-seat-id="45" data-seat-position="F5" data-price="75000">5</div>
-                    <div class="seat vip" data-seat-id="46" data-seat-position="F6" data-price="75000">6</div>
-                    <div class="seat vip" data-seat-id="47" data-seat-position="F7" data-price="75000">7</div>
-                    <div class="seat vip" data-seat-id="48" data-seat-position="F8" data-price="75000">8</div>
+                    <div class="side-group">
+                        <div class="seat vip" data-seat-id="41" data-seat-position="F1" data-price="75000">1</div>
+                        <div class="seat vip" data-seat-id="42" data-seat-position="F2" data-price="75000">2</div>
+                    </div>
+                    <div class="center-group">
+                        <div class="seat vip" data-seat-id="43" data-seat-position="F3" data-price="75000">3</div>
+                        <div class="seat vip" data-seat-id="44" data-seat-position="F4" data-price="75000">4</div>
+                        <div class="seat vip" data-seat-id="45" data-seat-position="F5" data-price="75000">5</div>
+                        <div class="seat vip" data-seat-id="46" data-seat-position="F6" data-price="75000">6</div>
+                    </div>
+                    <div class="side-group">
+                        <div class="seat vip" data-seat-id="47" data-seat-position="F7" data-price="75000">7</div>
+                        <div class="seat vip" data-seat-id="48" data-seat-position="F8" data-price="75000">8</div>
+                    </div>
                 </div>
-                
-                <!-- Row G: VIP seats -->
                 <div class="seat-row">
                     <div class="row-label">G</div>
-                    <div class="seat vip" data-seat-id="49" data-seat-position="G1" data-price="75000">1</div>
-                    <div class="seat vip" data-seat-id="50" data-seat-position="G2" data-price="75000">2</div>
-                    <div class="seat vip" data-seat-id="51" data-seat-position="G3" data-price="75000">3</div>
-                    <div class="seat vip" data-seat-id="52" data-seat-position="G4" data-price="75000">4</div>
-                    <div class="gap"></div>
-                    <div class="seat vip" data-seat-id="53" data-seat-position="G5" data-price="75000">5</div>
-                    <div class="seat vip" data-seat-id="54" data-seat-position="G6" data-price="75000">6</div>
-                    <div class="seat vip" data-seat-id="55" data-seat-position="G7" data-price="75000">7</div>
-                    <div class="seat vip" data-seat-id="56" data-seat-position="G8" data-price="75000">8</div>
+                    <div class="side-group">
+                        <div class="seat vip" data-seat-id="49" data-seat-position="G1" data-price="75000">1</div>
+                        <div class="seat vip" data-seat-id="50" data-seat-position="G2" data-price="75000">2</div>
+                    </div>
+                    <div class="center-group">
+                        <div class="seat vip" data-seat-id="51" data-seat-position="G3" data-price="75000">3</div>
+                        <div class="seat vip" data-seat-id="52" data-seat-position="G4" data-price="75000">4</div>
+                        <div class="seat vip" data-seat-id="53" data-seat-position="G5" data-price="75000">5</div>
+                        <div class="seat vip" data-seat-id="54" data-seat-position="G6" data-price="75000">6</div>
+                    </div>
+                    <div class="side-group">
+                        <div class="seat vip" data-seat-id="55" data-seat-position="G7" data-price="75000">7</div>
+                        <div class="seat vip" data-seat-id="56" data-seat-position="G8" data-price="75000">8</div>
+                    </div>
                 </div>
-                
-                <div style="height: 30px;"></div>
-                
-                <!-- Row H: Couple seats -->
-                <div class="seat-row">
+                <!-- Hàng H (couple) tách biệt phía dưới -->
+                <div class="seat-row couple-row">
                     <div class="row-label">H</div>
                     <div class="seat couple" data-seat-id="57" data-seat-position="H1" data-price="140000">1-2</div>
-                    <div class="gap"></div>
                     <div class="seat couple" data-seat-id="58" data-seat-position="H2" data-price="140000">3-4</div>
-                    <div class="gap"></div>
                     <div class="seat couple" data-seat-id="59" data-seat-position="H3" data-price="140000">5-6</div>
-                    <div class="gap"></div>
                     <div class="seat couple" data-seat-id="60" data-seat-position="H4" data-price="140000">7-8</div>
                 </div>
             </div>
@@ -481,6 +498,12 @@
             <button class="confirm-btn" id="confirm-btn" disabled onclick="confirmBooking()">
                 Confirm Booking <i class="icofont icofont-arrow-right"></i>
             </button>
+            <form id="booking-form" action="cinema" method="post" style="display:none;">
+                <input type="hidden" name="action" value="confirm-booking">
+                <input type="hidden" name="showtimeId" value="<%= showtimeId %>">
+                <input type="hidden" id="selectedSeatsInput" name="selectedSeats">
+                <input type="hidden" id="totalPriceInput" name="totalPrice">
+            </form>
         </div>
     </div>
     
@@ -550,7 +573,7 @@
                 confirmBtn.disabled = true;
             } else {
                 seatsDisplay.innerHTML = selectedSeats.map(seat => 
-                    `<span class="seat-tag">${seat.position} (${seat.type})</span>`
+                    `<span class="seat-tag">${seat.position}</span>`
                 ).join('');
                 totalPriceDisplay.textContent = `Total: ${totalPrice.toLocaleString()} VNĐ`;
                 confirmBtn.disabled = false;
@@ -562,22 +585,11 @@
                 alert('Please select at least one seat!');
                 return;
             }
-            
-            const bookingData = {
-                movieId: <%= movieId %>,
-                movieTitle: '<%= movieTitle %>',
-                theaterId: <%= theaterId %>,
-                showtimeId: <%= showtimeId %>,
-                showtime: '<%= showtime %>',
-                selectedSeats: selectedSeats,
-                totalPrice: totalPrice
-            };
-            
-            // Store booking data for payment page
-            sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
-            
-            // Redirect to payment page (to be created)
-            window.location.href = 'payment.jsp';
+            // Lấy danh sách tên ghế (A1, B2, ...)
+            const seatNames = selectedSeats.map(seat => seat.position);
+            document.getElementById('selectedSeatsInput').value = seatNames.join(',');
+            document.getElementById('totalPriceInput').value = totalPrice;
+            document.getElementById('booking-form').submit();
         }
     </script>
 </body>
