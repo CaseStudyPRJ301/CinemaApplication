@@ -174,6 +174,9 @@ public class CinemaServlet extends HttpServlet {
             case "reset-password":
                 processResetPassword(req, resp);
                 break;
+            case "confirm-booking":
+                processConfirmBooking(req, resp);
+                break;
             default:
                 showHomePage(req, resp);
                 break;
@@ -325,6 +328,26 @@ public class CinemaServlet extends HttpServlet {
             response.getWriter().println("<a href='?action=reset-password'>Try Again</a>");
             response.getWriter().println("</body></html>");
         }
+    }
+
+    private void processConfirmBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("username") == null) {
+            resp.sendRedirect("cinema?action=login&message=" + java.net.URLEncoder.encode("You need to login to book tickets!", "UTF-8"));
+            return;
+        }
+
+        String showtimeId = req.getParameter("showtimeId");
+        String selectedSeats = req.getParameter("selectedSeats");
+        String totalPrice = req.getParameter("totalPrice");
+
+        // TODO: Lưu thông tin vé vào database ở đây
+
+        // Chuyển hướng sang trang xác nhận/thông báo thành công (hoặc trang payment)
+        req.setAttribute("selectedSeats", selectedSeats);
+        req.setAttribute("totalPrice", totalPrice);
+        req.setAttribute("showtimeId", showtimeId);
+        req.getRequestDispatcher("payment.jsp").forward(req, resp);
     }
 
 }
