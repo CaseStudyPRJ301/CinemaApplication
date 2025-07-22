@@ -62,7 +62,6 @@ public class CinemaServlet extends HttpServlet {
             case "my-tickets-ajax":
                 showMyTicketsAjax(req, resp);
                 break;
-
             default:
                 showHomePage(req, resp);
                 break;
@@ -81,6 +80,26 @@ public class CinemaServlet extends HttpServlet {
                 java.net.URLEncoder.encode("You need to login to buy tickets!", "UTF-8"));
             return;
         }
+        
+        // Check seat availability for all showtimes
+        TicketRepositoryImp ticketRepository = new TicketRepositoryImp();
+        java.util.Set<Integer> fullyBookedShowtimes = new java.util.HashSet<>();
+        
+        // Check all showtimes (1-15)
+        for (int showtimeId = 1; showtimeId <= 15; showtimeId++) {
+            boolean isFullyBooked = ticketRepository.isShowtimeFullyBooked(showtimeId);
+            System.out.println("Showtime " + showtimeId + ": Fully booked = " + isFullyBooked);
+            
+            if (isFullyBooked) {
+                fullyBookedShowtimes.add(showtimeId);
+                System.out.println("Showtime " + showtimeId + " is fully booked and will be hidden");
+            }
+        }
+        
+        System.out.println("Fully booked showtimes: " + fullyBookedShowtimes);
+        
+        // Set attribute for JSP
+        req.setAttribute("fullyBookedShowtimes", fullyBookedShowtimes);
         
         req.getRequestDispatcher("tickets/buy-tickets.jsp").forward(req, resp);
     }
@@ -155,6 +174,13 @@ public class CinemaServlet extends HttpServlet {
             // Get booked seats from database
             ITicketService ticketService = new TicketServiceImp();
             List<Integer> bookedSeatIds = ticketService.getBookedSeatIdsByShowtime(showtimeId);
+            
+            // Check if showtime is fully booked
+            TicketRepositoryImp ticketRepository = new TicketRepositoryImp();
+            if (ticketRepository.isShowtimeFullyBooked(showtimeId)) {
+                resp.sendRedirect("cinema?action=buy-tickets&error=Showtime is fully booked");
+                return;
+            }
             
             // Set attributes for seat-selection.jsp
             req.setAttribute("movieId", movieId);
@@ -793,4 +819,5 @@ public class CinemaServlet extends HttpServlet {
             resp.getWriter().write("<div class='no-tickets'><p>Error loading tickets: " + e.getMessage() + "</p></div>");
         }
     }
+
 }

@@ -109,7 +109,6 @@ public class AdminServlet extends HttpServlet {
                 break;
         }
     }
-
     private boolean isAuthenticated(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return session != null && 

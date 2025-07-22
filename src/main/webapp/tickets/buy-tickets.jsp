@@ -11,6 +11,12 @@
             java.net.URLEncoder.encode("You need to login to buy tickets!", "UTF-8"));
         return;
     }
+    
+    // Get fully booked showtimes from request attribute
+    java.util.Set<Integer> fullyBookedShowtimes = (java.util.Set<Integer>) request.getAttribute("fullyBookedShowtimes");
+    if (fullyBookedShowtimes == null) {
+        fullyBookedShowtimes = new java.util.HashSet<>();
+    }
 %>
 <!DOCTYPE HTML>
 <html lang="vi">
@@ -101,6 +107,19 @@
             text-decoration: none;
         }
         
+        .showtime-btn.sold-out {
+            background: #666 !important;
+            color: #999 !important;
+            cursor: not-allowed !important;
+            text-decoration: line-through !important;
+        }
+        
+        .showtime-btn.sold-out:hover {
+            background: #666 !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
         .back-home {
             position: fixed;
             top: 20px;
@@ -129,6 +148,16 @@
             text-decoration: none;
             border-radius: 5px;
         }
+        
+        .sold-out-notice {
+            background: #ff4444;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -152,6 +181,15 @@
                 <p>You are logged in as: <strong><%= role %></strong></p>
             </div>
             
+            <!-- Error message display -->
+            <% 
+            String error = request.getParameter("error");
+            if (error != null && !error.isEmpty()) { %>
+                <div class="sold-out-notice" style="margin-bottom: 20px;">
+                    ⚠️ <%= error %>
+                </div>
+            <% } %>
+            
             <div class="movie-selection">
                 <h2 style="text-align: center; margin-bottom: 30px; color: #eb315a;">
                     <i class="icofont icofont-movie"></i> Phim Đang Chiếu
@@ -173,11 +211,49 @@
                             
                             <div style="margin-top: 20px;">
                                 <h5 style="color: #eb315a; margin-bottom: 15px;">Suất chiếu hôm nay:</h5>
-                                <a href="cinema?action=seat-selection&showtimeId=1" class="showtime-btn">10:00</a>
-                                <a href="cinema?action=seat-selection&showtimeId=2" class="showtime-btn">13:00</a>
-                                <a href="cinema?action=seat-selection&showtimeId=3" class="showtime-btn">16:00</a>
-                                <a href="cinema?action=seat-selection&showtimeId=4" class="showtime-btn">19:00</a>
-                                <a href="cinema?action=seat-selection&showtimeId=5" class="showtime-btn">22:00</a>
+                                
+                                <% if (fullyBookedShowtimes.contains(1)) { %>
+                                    <span class="showtime-btn sold-out">10:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=1" class="showtime-btn">10:00</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(2)) { %>
+                                    <span class="showtime-btn sold-out">13:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=2" class="showtime-btn">13:00</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(3)) { %>
+                                    <span class="showtime-btn sold-out">16:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=3" class="showtime-btn">16:00</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(4)) { %>
+                                    <span class="showtime-btn sold-out">19:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=4" class="showtime-btn">19:00</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(5)) { %>
+                                    <span class="showtime-btn sold-out">22:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=5" class="showtime-btn">22:00</a>
+                                <% } %>
+                                
+                                <% 
+                                // Check if all showtimes for this movie are sold out
+                                boolean allSoldOut = fullyBookedShowtimes.contains(1) && 
+                                                   fullyBookedShowtimes.contains(2) && 
+                                                   fullyBookedShowtimes.contains(3) && 
+                                                   fullyBookedShowtimes.contains(4) && 
+                                                   fullyBookedShowtimes.contains(5);
+                                if (allSoldOut) { %>
+                                    <div class="sold-out-notice">
+                                        ⚠️ Tất cả suất chiếu của phim này đã hết chỗ!
+                                    </div>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -199,11 +275,49 @@
                             
                             <div style="margin-top: 20px;">
                                 <h5 style="color: #eb315a; margin-bottom: 15px;">Suất chiếu hôm nay:</h5>
-                                <a href="cinema?action=seat-selection&showtimeId=6" class="showtime-btn">09:30</a>
-                                <a href="cinema?action=seat-selection&showtimeId=7" class="showtime-btn">12:30</a>
-                                <a href="cinema?action=seat-selection&showtimeId=8" class="showtime-btn">15:30</a>
-                                <a href="cinema?action=seat-selection&showtimeId=9" class="showtime-btn">18:30</a>
-                                <a href="cinema?action=seat-selection&showtimeId=10" class="showtime-btn">21:30</a>
+                                
+                                <% if (fullyBookedShowtimes.contains(6)) { %>
+                                    <span class="showtime-btn sold-out">09:30</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=6" class="showtime-btn">09:30</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(7)) { %>
+                                    <span class="showtime-btn sold-out">12:30</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=7" class="showtime-btn">12:30</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(8)) { %>
+                                    <span class="showtime-btn sold-out">15:30</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=8" class="showtime-btn">15:30</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(9)) { %>
+                                    <span class="showtime-btn sold-out">18:30</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=9" class="showtime-btn">18:30</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(10)) { %>
+                                    <span class="showtime-btn sold-out">21:30</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=10" class="showtime-btn">21:30</a>
+                                <% } %>
+                                
+                                <% 
+                                // Check if all showtimes for this movie are sold out
+                                boolean allSoldOut2 = fullyBookedShowtimes.contains(6) && 
+                                                    fullyBookedShowtimes.contains(7) && 
+                                                    fullyBookedShowtimes.contains(8) && 
+                                                    fullyBookedShowtimes.contains(9) && 
+                                                    fullyBookedShowtimes.contains(10);
+                                if (allSoldOut2) { %>
+                                    <div class="sold-out-notice">
+                                        ⚠️ Tất cả suất chiếu của phim này đã hết chỗ!
+                                    </div>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -227,11 +341,49 @@
                             
                             <div style="margin-top: 20px;">
                                 <h5 style="color: #eb315a; margin-bottom: 15px;">Suất chiếu hôm nay:</h5>
-                                <a href="cinema?action=seat-selection&showtimeId=11" class="showtime-btn">11:00</a>
-                                <a href="cinema?action=seat-selection&showtimeId=12" class="showtime-btn">14:00</a>
-                                <a href="cinema?action=seat-selection&showtimeId=13" class="showtime-btn">17:00</a>
-                                <a href="cinema?action=seat-selection&showtimeId=14" class="showtime-btn">20:00</a>
-                                <a href="cinema?action=seat-selection&showtimeId=15" class="showtime-btn">23:00</a>
+                                
+                                <% if (fullyBookedShowtimes.contains(11)) { %>
+                                    <span class="showtime-btn sold-out">11:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=11" class="showtime-btn">11:00</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(12)) { %>
+                                    <span class="showtime-btn sold-out">14:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=12" class="showtime-btn">14:00</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(13)) { %>
+                                    <span class="showtime-btn sold-out">17:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=13" class="showtime-btn">17:00</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(14)) { %>
+                                    <span class="showtime-btn sold-out">20:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=14" class="showtime-btn">20:00</a>
+                                <% } %>
+                                
+                                <% if (fullyBookedShowtimes.contains(15)) { %>
+                                    <span class="showtime-btn sold-out">23:00</span>
+                                <% } else { %>
+                                    <a href="cinema?action=seat-selection&showtimeId=15" class="showtime-btn">23:00</a>
+                                <% } %>
+                                
+                                <% 
+                                // Check if all showtimes for this movie are sold out
+                                boolean allSoldOut3 = fullyBookedShowtimes.contains(11) && 
+                                                    fullyBookedShowtimes.contains(12) && 
+                                                    fullyBookedShowtimes.contains(13) && 
+                                                    fullyBookedShowtimes.contains(14) && 
+                                                    fullyBookedShowtimes.contains(15);
+                                if (allSoldOut3) { %>
+                                    <div class="sold-out-notice">
+                                        ⚠️ Tất cả suất chiếu của phim này đã hết chỗ!
+                                    </div>
+                                <% } %>
                             </div>
                         </div>
                     </div>

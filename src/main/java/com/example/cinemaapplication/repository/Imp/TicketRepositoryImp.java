@@ -295,4 +295,130 @@ public class TicketRepositoryImp extends BaseRepository implements ITicketReposi
         }
         return ticketDetails;
     }
+    
+    public int getAvailableSeatsForShowtime(int showtimeId) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                 "SELECT (SELECT COUNT(*) FROM Seat WHERE theater_id = s.theater_id) - " +
+                 "(SELECT COUNT(*) FROM Ticket WHERE showtime_id = ?) as available_seats " +
+                 "FROM Showtime s WHERE s.showtime_id = ?")) {
+            ps.setInt(1, showtimeId);
+            ps.setInt(2, showtimeId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int availableSeats = rs.getInt("available_seats");
+                    System.out.println("Showtime " + showtimeId + " - Available seats: " + availableSeats);
+                    return availableSeats;
+                } else {
+                    System.out.println("Showtime " + showtimeId + " - No result found");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting available seats for showtime " + showtimeId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public boolean isShowtimeFullyBooked(int showtimeId) {
+        // Count booked seats for this specific showtime
+        int bookedSeats = getBookedSeatsForShowtime(showtimeId);
+        int totalSeats = 60; // Each showtime has 60 seats available
+        boolean isFullyBooked = bookedSeats >= totalSeats;
+        
+        System.out.println("Showtime " + showtimeId + " - Total seats: " + totalSeats + ", Booked seats: " + bookedSeats + ", Is fully booked: " + isFullyBooked);
+        
+        return isFullyBooked;
+    }
+    
+    public int getBookedSeatsForShowtime(int showtimeId) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                 "SELECT COUNT(*) as booked_seats FROM Ticket WHERE showtime_id = ?")) {
+            ps.setInt(1, showtimeId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int bookedSeats = rs.getInt("booked_seats");
+                    System.out.println("Showtime " + showtimeId + " - Booked seats: " + bookedSeats);
+                    return bookedSeats;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting booked seats for showtime " + showtimeId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public boolean createDummyBooking(Integer customerId, Integer employeeId, int showtimeId, int theaterId, String selectedSeats, int totalPrice, java.util.Date bookingTime) {
+        try (Connection conn = getConnection()) {
+            // Parse selected seats
+            String[] seatPositions = selectedSeats.split(",");
+            
+            for (String seatPosition : seatPositions) {
+                seatPosition = seatPosition.trim();
+                
+                // Convert seat position to seat ID (simplified logic)
+                int seatId = convertSeatPositionToId(seatPosition, theaterId);
+                
+                // Create ticket
+                PreparedStatement ps = conn.prepareStatement(INSERT_TICKET, PreparedStatement.RETURN_GENERATED_KEYS);
+                
+                if (customerId != null) {
+                    ps.setInt(1, customerId);
+                } else {
+                    ps.setNull(1, java.sql.Types.INTEGER);
+                }
+                
+                ps.setInt(2, seatId);
+                ps.setInt(3, showtimeId);
+                
+                if (employeeId != null) {
+                    ps.setInt(4, employeeId);
+                } else {
+                    ps.setNull(4, java.sql.Types.INTEGER);
+                }
+                
+                int result = ps.executeUpdate();
+                if (result <= 0) {
+                    System.err.println("Failed to create ticket for seat: " + seatPosition);
+                    return false;
+                }
+            }
+            
+            System.out.println("Successfully created dummy booking with " + seatPositions.length + " tickets");
+            return true;
+            
+        } catch (SQLException e) {
+            System.err.println("Error creating dummy booking: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    private int convertSeatPositionToId(String seatPosition, int theaterId) {
+        // Simplified conversion logic
+        // This should match the logic used in the seat selection page
+        char row = seatPosition.charAt(0);
+        int seatNumber = Integer.parseInt(seatPosition.substring(1));
+        
+        // Each theater has 56 seats (7 rows x 8 seats)
+        int baseSeatId = (theaterId - 1) * 56;
+        
+        int rowOffset = 0;
+        switch (row) {
+            case 'A': rowOffset = 0; break;
+            case 'B': rowOffset = 8; break;
+            case 'C': rowOffset = 16; break;
+            case 'D': rowOffset = 24; break;
+            case 'E': rowOffset = 32; break;
+            case 'F': rowOffset = 40; break;
+            case 'G': rowOffset = 48; break;
+            default: rowOffset = 0;
+        }
+        
+        int seatId = baseSeatId + rowOffset + seatNumber;
+        System.out.println("Converting seat " + seatPosition + " in theater " + theaterId + " to seat ID: " + seatId);
+        return seatId;
+    }
 }
