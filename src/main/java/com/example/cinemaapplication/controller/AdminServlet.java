@@ -9,12 +9,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import com.example.cinemaapplication.model.Employee;
 import com.example.cinemaapplication.model.Customer;
+import com.example.cinemaapplication.model.TicketDetail;
+import com.example.cinemaapplication.model.BookingGroup;
 import java.util.List;
 import com.example.cinemaapplication.service.IEmployeeService;
 import com.example.cinemaapplication.service.Imp.EmployeeServiceImp;
 import com.example.cinemaapplication.service.ICustomerService;
 import com.example.cinemaapplication.service.Imp.CustomerServiceImp;
 import com.example.cinemaapplication.repository.Imp.UserRepository;
+import com.example.cinemaapplication.repository.Imp.TicketRepositoryImp;
+import com.example.cinemaapplication.util.BookingGroupUtil;
 
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
@@ -43,6 +47,9 @@ public class AdminServlet extends HttpServlet {
                 break;
             case "manage-customers":
                 showCustomerManagement(request, response);
+                break;
+            case "view-customer":
+                showCustomerDetails(request, response);
                 break;
             case "manage-movies":
                 showMovieManagement(request, response);
@@ -123,6 +130,39 @@ public class AdminServlet extends HttpServlet {
         List<Customer> customerList = customerService.getAllCustomers();
         request.setAttribute("customerList", customerList);
         request.getRequestDispatcher("admin/manage-customers.jsp").forward(request, response);
+    }
+
+    private void showCustomerDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String customerIdParam = request.getParameter("id");
+        if (customerIdParam == null) {
+            response.sendRedirect("admin?action=manage-customers");
+            return;
+        }
+
+        try {
+            int customerId = Integer.parseInt(customerIdParam);
+            ICustomerService customerService = new CustomerServiceImp();
+            Customer customer = customerService.getCustomerById(customerId);
+            
+            if (customer == null) {
+                response.sendRedirect("admin?action=manage-customers");
+                return;
+            }
+
+            // Get ticket details for this customer
+            TicketRepositoryImp ticketRepository = new TicketRepositoryImp();
+            List<TicketDetail> ticketList = ticketRepository.getTicketDetailsByCustomerId(customerId);
+            
+            // Group tickets by booking time
+            List<BookingGroup> bookingGroups = BookingGroupUtil.groupTicketsByBookingTime(ticketList);
+
+            request.setAttribute("customer", customer);
+            request.setAttribute("ticketList", ticketList);
+            request.setAttribute("bookingGroups", bookingGroups);
+            request.getRequestDispatcher("admin/view-customer.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("admin?action=manage-customers");
+        }
     }
 
     private void showMovieManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

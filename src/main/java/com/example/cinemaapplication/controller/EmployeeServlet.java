@@ -7,6 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import com.example.cinemaapplication.model.Customer;
+import com.example.cinemaapplication.model.TicketDetail;
+import com.example.cinemaapplication.model.BookingGroup;
+import com.example.cinemaapplication.service.ICustomerService;
+import com.example.cinemaapplication.service.Imp.CustomerServiceImp;
+import com.example.cinemaapplication.repository.Imp.TicketRepositoryImp;
+import com.example.cinemaapplication.util.BookingGroupUtil;
+import java.util.List;
 
 @WebServlet("/employee")
 public class EmployeeServlet extends HttpServlet {
@@ -28,6 +36,12 @@ public class EmployeeServlet extends HttpServlet {
         switch (action) {
             case "dashboard":
                 showDashboard(request, response);
+                break;
+            case "manage-customers":
+                showCustomerManagement(request, response);
+                break;
+            case "view-customer":
+                showCustomerDetails(request, response);
                 break;
             case "profile":
                 showProfile(request, response);
@@ -85,12 +99,51 @@ public class EmployeeServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         return session != null && 
                session.getAttribute("role") != null && 
-               (session.getAttribute("role").equals("EMPLOYEE") || 
-                session.getAttribute("role").equals("USER"));
+               session.getAttribute("role").equals("employee");
     }
 
     private void showDashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("employee/employee-dashboard.jsp").forward(request, response);
+    }
+
+    private void showCustomerManagement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ICustomerService customerService = new CustomerServiceImp();
+        List<Customer> customerList = customerService.getAllCustomers();
+        request.setAttribute("customerList", customerList);
+        request.getRequestDispatcher("employee/manage-customers.jsp").forward(request, response);
+    }
+
+    private void showCustomerDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String customerIdParam = request.getParameter("id");
+        if (customerIdParam == null) {
+            response.sendRedirect("employee?action=manage-customers");
+            return;
+        }
+
+        try {
+            int customerId = Integer.parseInt(customerIdParam);
+            ICustomerService customerService = new CustomerServiceImp();
+            Customer customer = customerService.getCustomerById(customerId);
+            
+            if (customer == null) {
+                response.sendRedirect("employee?action=manage-customers");
+                return;
+            }
+
+            // Get ticket details for this customer
+            TicketRepositoryImp ticketRepository = new TicketRepositoryImp();
+            List<TicketDetail> ticketList = ticketRepository.getTicketDetailsByCustomerId(customerId);
+            
+            // Group tickets by booking time
+            List<BookingGroup> bookingGroups = BookingGroupUtil.groupTicketsByBookingTime(ticketList);
+
+            request.setAttribute("customer", customer);
+            request.setAttribute("ticketList", ticketList);
+            request.setAttribute("bookingGroups", bookingGroups);
+            request.getRequestDispatcher("employee/view-customer.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("employee?action=manage-customers");
+        }
     }
 
     private void showProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

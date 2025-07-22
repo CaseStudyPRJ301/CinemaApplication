@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Customers - Cinema Management</title>
+    <title>Manage Customers - Employee Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -25,7 +25,7 @@
         }
         
         /* Sidebar Styles */
-        .admin-sidebar {
+        .employee-sidebar {
             position: fixed;
             left: 0;
             top: 0;
@@ -45,7 +45,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
-        .admin-avatar {
+        .employee-avatar {
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -59,20 +59,20 @@
             font-weight: 600;
         }
         
-        .admin-name {
+        .employee-name {
             color: #fff;
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 5px;
         }
         
-        .admin-email {
+        .employee-email {
             color: #b6b7b9;
             font-size: 14px;
             margin-bottom: 8px;
         }
         
-        .admin-role {
+        .employee-role {
             background: linear-gradient(90deg, #eb315a, #c340ca);
             color: white;
             padding: 4px 12px;
@@ -184,6 +184,8 @@
             margin: 0;
         }
         
+
+        
         /* Data Table */
         .data-table {
             background: linear-gradient(135deg, #1a1d29, #13151f);
@@ -268,6 +270,8 @@
             transform: translateY(-2px);
         }
         
+
+        
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -299,7 +303,7 @@
                 margin-left: 0;
             }
             
-            .admin-sidebar {
+            .employee-sidebar {
                 transform: translateX(-100%);
             }
             
@@ -326,12 +330,12 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="admin-sidebar">
+    <div class="employee-sidebar">
         <div class="sidebar-header">
-            <div class="admin-avatar">A</div>
-            <div class="admin-name">Admin Name</div>
-            <div class="admin-email">admin@cinema.com</div>
-            <div class="admin-role">Admin</div>
+            <div class="employee-avatar">E</div>
+            <div class="employee-name">Employee Name</div>
+            <div class="employee-email">employee@cinema.com</div>
+            <div class="employee-role">Employee</div>
         </div>
         
         <nav class="sidebar-nav">
@@ -342,27 +346,15 @@
                 </a>
             </div>
             <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin" class="nav-link">
+                <a href="${pageContext.request.contextPath}/employee" class="nav-link">
                     <i class="bi bi-speedometer2 nav-icon"></i>
                     Dashboard
                 </a>
             </div>
             <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin?action=manage-employees" class="nav-link">
-                    <i class="bi bi-person-badge nav-icon"></i>
-                    Manage Employees
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin?action=manage-customers" class="nav-link active">
+                <a href="${pageContext.request.contextPath}/employee?action=manage-customers" class="nav-link active">
                     <i class="bi bi-people nav-icon"></i>
                     Manage Customers
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="${pageContext.request.contextPath}/admin?action=reports" class="nav-link">
-                    <i class="bi bi-graph-up nav-icon"></i>
-                    Reports
                 </a>
             </div>
             
@@ -383,7 +375,7 @@
             <div>
                 <h1 style="color: #fff; margin: 0; font-size: 24px;">Customer Management</h1>
                 <div class="breadcrumb-nav">
-                    <a href="${pageContext.request.contextPath}/admin">Dashboard</a>
+                    <a href="${pageContext.request.contextPath}/employee">Dashboard</a>
                     <span>></span>
                     <span>Manage Customers</span>
                 </div>
@@ -395,6 +387,8 @@
             <div class="section-header">
                 <h2 class="section-title">Customer List</h2>
             </div>
+            
+
             
             <div class="data-table">
                 <c:choose>
@@ -425,7 +419,7 @@
                                             <fmt:formatDate value="${customer.createdAt}" pattern="MMM dd, yyyy"/>
                                         </td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/admin?action=view-customer&id=${customer.customerId}" class="action-btn btn-view">
+                                            <a href="${pageContext.request.contextPath}/employee?action=view-customer&id=${customer.customerId}" class="action-btn btn-view">
                                                 <i class="bi bi-eye"></i> View
                                             </a>
                                         </td>
