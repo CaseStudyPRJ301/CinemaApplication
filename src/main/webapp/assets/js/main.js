@@ -23,7 +23,8 @@
 		$('html, body').animate({scrollTop : 0},2000);
 		return false;
 	});
-	$('.menu-area ul > li > .theme-btn').on('click', function () {
+	// Only show buy-ticket modal for specific buy ticket buttons, not the header tickets button
+	$('.menu-area ul > li > .theme-btn:not([href*="my-tickets"])').on('click', function () {
 		$('.buy-ticket').show();
 		return false;
 	});

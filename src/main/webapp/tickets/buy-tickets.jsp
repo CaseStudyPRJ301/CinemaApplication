@@ -161,7 +161,7 @@
                 <div class="movie-card">
                     <div class="row">
                         <div class="col-md-3">
-                            <img src="assets/img/thesaart-squid-game-concept-art-thesaart.png" 
+                            <img src="../assets/img/thesaart-squid-game-concept-art-thesaart.png"
                                  alt="Squid Game" style="width: 100%; border-radius: 10px;">
                         </div>
                         <div class="col-md-9">
@@ -187,7 +187,7 @@
                 <div class="movie-card">
                     <div class="row">
                         <div class="col-md-3">
-                            <img src="assets/img/slide1.png" 
+                            <img src="../assets/img/slide1.png"
                                  alt="Last Avatar" style="width: 100%; border-radius: 10px;">
                         </div>
                         <div class="col-md-9">

@@ -148,17 +148,20 @@ public class EmployeeServlet extends HttpServlet {
 
     private void showProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Implement profile view
-        request.getRequestDispatcher("user/profile.jsp").forward(request, response);
+        response.getWriter().println("<h1>Profile Management - Coming Soon</h1>");
+        response.getWriter().println("<a href='employee?action=dashboard'>Back to Dashboard</a>");
     }
 
     private void showTickets(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Implement tickets view
-        request.getRequestDispatcher("user/tickets.jsp").forward(request, response);
+        response.getWriter().println("<h1>Ticket Management - Coming Soon</h1>");
+        response.getWriter().println("<a href='employee?action=dashboard'>Back to Dashboard</a>");
     }
 
     private void showMovies(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: Implement movies view
-        request.getRequestDispatcher("user/movies.jsp").forward(request, response);
+        response.getWriter().println("<h1>Movie Management - Coming Soon</h1>");
+        response.getWriter().println("<a href='employee?action=dashboard'>Back to Dashboard</a>");
     }
 
     private void updateProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

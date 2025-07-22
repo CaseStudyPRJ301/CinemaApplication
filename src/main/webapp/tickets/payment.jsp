@@ -235,7 +235,7 @@
             </div>
             
             <div style="margin-top: 20px;">
-                <a href="/" class="back-btn" style="margin-right: 10px;">Back to Home</a>
+                <a href="${pageContext.request.contextPath}/" class="back-btn" style="margin-right: 10px;">Back to Home</a>
                 <button class="confirm-btn" onclick="printTicket()" style="width: auto; display: inline-block;">
                     Print Ticket <i class="icofont icofont-printer"></i>
                 </button>
@@ -244,7 +244,7 @@
     </div>
     
     <!-- JavaScript -->
-    <script src="assets/js/jquery.min.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
     <script>
         let bookingData = null;
         

@@ -57,17 +57,17 @@
 					    <div class="mainmenu">
                             <ul id="primary-menu">
                                 <li><a href="/">Home</a></li>
-                                <li><a href="movies.html">Movies</a></li>
-                                <li><a href="celebrities.html">CelebritiesList</a></li>
-                                <li><a href="top-movies.html">Top Movies</a></li>
-                                <li><a href="blog.html">News</a></li>
+                                <li><a href="movies.jsp">Movies</a></li>
+                                <li><a href="celebrities.jsp">CelebritiesList</a></li>
+                                <li><a href="top-movies.jsp">Top Movies</a></li>
+                                <li><a href="blog.jsp">News</a></li>
 								<li><a class="active" href="#">Pages <i class="icofont icofont-simple-down"></i></a>
 									<ul>
-										<li><a class="active" href="blog-details.html">Blog Details</a></li>
-										<li><a href="movie-details.html">Movie Details</a></li>
+										<li><a href="blog-details.jsp">Blog Details</a></li>
+										                <li><a class="active" href="movie-details.jsp">Movie Details</a></li>
 									</ul>
 								</li>
-                                <li><a class="theme-btn" href="#"><i class="icofont icofont-ticket"></i> Tickets</a></li>
+                                <li><a class="theme-btn" href="cinema?action=my-tickets"><i class="icofont icofont-ticket"></i> Tickets</a></li>
                             </ul>
 					    </div>
 					</div>
@@ -339,51 +339,117 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="breadcrumb-area-content">
-							<h1>Blog Details Page</h1>
+							<h1>Movie Detalied Page</h1>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section><!-- breadcrumb area end -->
-		<!-- blog area start -->
-		<section class="blog-details">
+		<!-- transformers area start -->
+		<section class="transformers-area">
+			<div class="container">
+				<div class="transformers-box">
+					<div class="row flexbox-center">
+						<div class="col-lg-5 text-lg-left text-center">
+							<div class="transformers-content">
+								<img src="assets/img/slide2.png" alt="about" />
+							</div>
+						</div>
+						<div class="col-lg-7">
+							<div class="transformers-content">
+								<h2>The Transformers</h2>
+								<p>3D | Animation | Action | Sci-Fi</p>
+								<ul>
+									<li>
+										<div class="transformers-left">
+											Movie:
+										</div>
+										<div class="transformers-right">
+											<a href="#">Sci-Fic</a>
+										</div>
+									</li>
+									<li>
+										<div class="transformers-left">
+											Writer:
+										</div>
+										<div class="transformers-right">
+											Stephen McFeely, Christopher Markus
+										</div>
+									</li>
+									<li>
+										<div class="transformers-left">
+											Director:
+										</div>
+										<div class="transformers-right">
+											Joe Johnston
+										</div>
+									</li>
+									<li>
+										<div class="transformers-left">
+											Time: 
+										</div>
+										<div class="transformers-right">
+											190m
+										</div>
+									</li>
+									<li>
+										<div class="transformers-left">
+											Release:
+										</div>
+										<div class="transformers-right">
+											2018-07-22
+										</div>
+									</li>
+									<li>
+										<div class="transformers-left">
+											Language:
+										</div>
+										<div class="transformers-right">
+											English, Russian
+										</div>
+									</li>
+									<li>
+										<div class="transformers-left">
+											Cinema:
+										</div>
+										<div class="transformers-right">
+											HB Movies  |  HW Town <a href="#" class="theme-btn">Movies House</a>Grand Seats  |  HB Max
+											<div class="transformers-bottom">
+												<p>May 19, 2018 <span>15h47</span></p>
+												<p>May 19, 2018 <span>15h47</span></p>
+												<p>May 19, 2018 <span>15h47</span></p>
+											</div>
+											
+										</div>
+									</li>
+									<li>
+										<div class="transformers-left">
+											Share:
+										</div>
+										<div class="transformers-right">
+											<a href="#"><i class="icofont icofont-social-facebook"></i></a>
+											<a href="#"><i class="icofont icofont-social-twitter"></i></a>
+											<a href="#"><i class="icofont icofont-social-google-plus"></i></a>
+											<a href="#"><i class="icofont icofont-youtube-play"></i></a>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<a href="cinema?action=buy-tickets" class="theme-btn"><i class="icofont icofont-ticket"></i> BUY TICKET</a>
+				</div>
+			</div>
+		</section><!-- transformers area end -->
+		<!-- details area start -->
+		<section class="details-area">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-9">
-						<div class="news-details">
-							<div class="single-news">
-								<div class="news-bg-1"></div>
-								<div class="news-date">
-									<h2><span>NOV</span> 25</h2>
-									<h1>2017</h1>
-								</div>
-							</div>
-							<h2>Transformers: The Last Knight</h2>
-							<a href="#"><i class="icofont icofont-users"></i>Animation, Movie, Action, Sci-Fi</a>
-							<a href="#"><i class="icofont icofont-comment"></i>1k Comments</a>
-							<p>Humans are at war with the Transformers, and Optimus Prime is gone. The key to saving the future lies buried in the secrets of the past and the hidden history of Transformers on Earth. Now it's up to the unlikely alliance of inventor Cade Yeager, Bumblebee, an English lord and an Oxford professor to save the world. Transformers: The Last Knight has a deeper mythos and bigger spectacle than its predecessors, yet still ends up being mostly hollow and cacophonous. The first "Transformers" movie that could actually be characterized as badass. Which isn't a bad thing. It may, in fact, be better.</p>
-							<div class="detail-author">
-								<div class="row flexbox-center">
-									<div class="col-lg-6 text-lg-left text-center">
-										<div class="details-author">
-											<h4>By Admin:</h4>
-											<img src="assets/img/author.png" alt="" />
-										</div>
-									</div>
-									<div class="col-lg-6 text-lg-right text-center">
-										<div class="details-author">
-											<h4>Share:</h4>
-											<a href="#"><i class="icofont icofont-social-facebook"></i></a>
-											<a href="#"><i class="icofont icofont-social-twitter"></i></a>
-											<a href="#"><i class="icofont icofont-social-pinterest"></i></a>
-											<a href="#"><i class="icofont icofont-social-linkedin"></i></a>
-											<a href="#"><i class="icofont icofont-social-google-plus"></i></a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="text-center">
-								<img src="assets/img/blog-detail.png" alt="" />
+						<div class="details-content">
+							<div class="details-overview">
+								<h2>Overview</h2>
+								<p>Humans are at war with the Transformers, and Optimus Prime is gone. The key to saving the future lies buried in the secrets of the past and the hidden history of Transformers on Earth. Now it's up to the unlikely alliance of inventor Cade Yeager, Bumblebee, a n English lord and an Oxford professor to save the world. Transformers: The Last Knight has a deeper mythos and bigger spectacle than its predecessors, yet still ends up being mostly hollow and cacophonous. The first "Transformers" movie that could actually be characterized as badass. Which isn't a bad thing. It may, in fact, be better.</p>
 							</div>
 							<div class="details-reply">
 								<h2>Leave a Reply</h2>
@@ -442,49 +508,16 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
-						<div class="blog-sidebar">
-							<h4>Recent Posts</h4>
-							<ul>
-								<li><a href="#">Transformers: The Last Knight</a></li>
-								<li><a href="#">Duis aute irure dolor in reprehenderit in voluptate</a></li>
-								<li><a href="#">Nostrud exercitation ullamco laboris</a></li>
-								<li><a href="#">Magnam aliquam quaerat voluptatem</a></li>
-								<li><a href="#">Magnam aliquam quaerat voluptatem</a></li>
-								<li><a href="#">Excepteur sint occaecat cupidatat proi</a></li>
-							</ul>
-							<h4>Recent Comments</h4>
-							<ul>
-								<li><a href="#">admin on Justice League</a></li>
-								<li><a href="#">admin on Mask Man</a></li>
-								<li><a href="#">admin on Angle Pori</a></li>
-								<li><a href="#">admin on The Man</a></li>
-								<li><a href="#">admin on WP Devil</a></li>
-							</ul>
-							<h4>Categories</h4>
-							<ul>
-								<li><a href="#">Blog</a></li>
-								<li><a href="#">Feature</a></li>
-								<li><a href="#">Media</a></li>
-								<li><a href="#">Movie</a></li>
-								<li><a href="#">Trailers_video</a></li>
-								<li><a href="#">Uncategorized</a></li>
-							</ul>
-							<h4>Archives</h4>
-							<ul>
-								<li><a href="#">February 2018</a></li>
-								<li><a href="#">January 2018</a></li>
-								<li><a href="#">March 2018</a></li>
-								<li><a href="#">April 2018</a></li>
-							</ul>
-							<div class="portfolio-sidebar">
-								<img src="assets/img/sidebar/sidebar1.png" alt="sidebar" />
-							</div>
+					<div class="col-lg-3 text-center text-lg-left">
+					    <div class="portfolio-sidebar">
+							<img src="assets/img/sidebar/sidebar1.png" alt="sidebar" />
+							<img src="assets/img/sidebar/sidebar2.png" alt="sidebar" />
+							<img src="assets/img/sidebar/sidebar4.png" alt="sidebar" />
 						</div>
 					</div>
 				</div>
 			</div>
-		</section><!-- blog area end -->
+		</section><!-- details area end -->
 		<!-- footer section start -->
 		<footer class="footer">
 			<div class="container">

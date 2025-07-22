@@ -57,17 +57,17 @@
 					    <div class="mainmenu">
                             <ul id="primary-menu">
                                 <li><a href="/">Home</a></li>
-                                <li><a href="movies.html">Movies</a></li>
-                                <li><a href="celebrities.html">CelebritiesList</a></li>
-                                <li><a href="top-movies.html">Top Movies</a></li>
-                                <li><a href="blog.html">News</a></li>
-								<li><a class="active" href="#">Pages <i class="icofont icofont-simple-down"></i></a>
+                                <li><a href="movies.jsp">Movies</a></li>
+                                <li><a href="celebrities.jsp">CelebritiesList</a></li>
+                                <li><a href="top-movies.jsp">Top Movies</a></li>
+                                <li><a class="active" href="blog.jsp">News</a></li>
+								<li><a href="#">Pages <i class="icofont icofont-simple-down"></i></a>
 									<ul>
-										<li><a href="blog-details.html">Blog Details</a></li>
-										<li><a class="active" href="movie-details.html">Movie Details</a></li>
+										<li><a href="blog-details.jsp">Blog Details</a></li>
+										<li><a href="movie-details.jsp">Movie Details</a></li>
 									</ul>
 								</li>
-                                <li><a class="theme-btn" href="#"><i class="icofont icofont-ticket"></i> Tickets</a></li>
+                                <li><a class="theme-btn" href="cinema?action=my-tickets"><i class="icofont icofont-ticket"></i> Tickets</a></li>
                             </ul>
 					    </div>
 					</div>
@@ -339,185 +339,65 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="breadcrumb-area-content">
-							<h1>Movie Detalied Page</h1>
+							<h1>Blog Page</h1>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section><!-- breadcrumb area end -->
-		<!-- transformers area start -->
-		<section class="transformers-area">
-			<div class="container">
-				<div class="transformers-box">
-					<div class="row flexbox-center">
-						<div class="col-lg-5 text-lg-left text-center">
-							<div class="transformers-content">
-								<img src="assets/img/slide2.png" alt="about" />
-							</div>
-						</div>
-						<div class="col-lg-7">
-							<div class="transformers-content">
-								<h2>The Transformers</h2>
-								<p>3D | Animation | Action | Sci-Fi</p>
-								<ul>
-									<li>
-										<div class="transformers-left">
-											Movie:
-										</div>
-										<div class="transformers-right">
-											<a href="#">Sci-Fic</a>
-										</div>
-									</li>
-									<li>
-										<div class="transformers-left">
-											Writer:
-										</div>
-										<div class="transformers-right">
-											Stephen McFeely, Christopher Markus
-										</div>
-									</li>
-									<li>
-										<div class="transformers-left">
-											Director:
-										</div>
-										<div class="transformers-right">
-											Joe Johnston
-										</div>
-									</li>
-									<li>
-										<div class="transformers-left">
-											Time: 
-										</div>
-										<div class="transformers-right">
-											190m
-										</div>
-									</li>
-									<li>
-										<div class="transformers-left">
-											Release:
-										</div>
-										<div class="transformers-right">
-											2018-07-22
-										</div>
-									</li>
-									<li>
-										<div class="transformers-left">
-											Language:
-										</div>
-										<div class="transformers-right">
-											English, Russian
-										</div>
-									</li>
-									<li>
-										<div class="transformers-left">
-											Cinema:
-										</div>
-										<div class="transformers-right">
-											HB Movies  |  HW Town <a href="#" class="theme-btn">Movies House</a>Grand Seats  |  HB Max
-											<div class="transformers-bottom">
-												<p>May 19, 2018 <span>15h47</span></p>
-												<p>May 19, 2018 <span>15h47</span></p>
-												<p>May 19, 2018 <span>15h47</span></p>
-											</div>
-											
-										</div>
-									</li>
-									<li>
-										<div class="transformers-left">
-											Share:
-										</div>
-										<div class="transformers-right">
-											<a href="#"><i class="icofont icofont-social-facebook"></i></a>
-											<a href="#"><i class="icofont icofont-social-twitter"></i></a>
-											<a href="#"><i class="icofont icofont-social-google-plus"></i></a>
-											<a href="#"><i class="icofont icofont-youtube-play"></i></a>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<a href="#" class="theme-btn"><i class="icofont icofont-ticket"></i> BUY TICKET</a>
-				</div>
-			</div>
-		</section><!-- transformers area end -->
-		<!-- details area start -->
-		<section class="details-area">
+		<!-- blog area start -->
+		<section class="blog-area">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-9">
-						<div class="details-content">
-							<div class="details-overview">
-								<h2>Overview</h2>
-								<p>Humans are at war with the Transformers, and Optimus Prime is gone. The key to saving the future lies buried in the secrets of the past and the hidden history of Transformers on Earth. Now it's up to the unlikely alliance of inventor Cade Yeager, Bumblebee, a n English lord and an Oxford professor to save the world. Transformers: The Last Knight has a deeper mythos and bigger spectacle than its predecessors, yet still ends up being mostly hollow and cacophonous. The first "Transformers" movie that could actually be characterized as badass. Which isn't a bad thing. It may, in fact, be better.</p>
-							</div>
-							<div class="details-reply">
-								<h2>Leave a Reply</h2>
-								<form action="#">
-									<div class="row">
-										<div class="col-lg-4">
-											<div class="select-container">
-												<input type="text" placeholder="Name"/>
-												<i class="icofont icofont-ui-user"></i>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="select-container">
-												<input type="text" placeholder="Email"/>
-												<i class="icofont icofont-envelope"></i>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="select-container">
-												<input type="text" placeholder="Phone"/>
-												<i class="icofont icofont-phone"></i>
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="textarea-container">
-												<textarea placeholder="Type Here Message"></textarea>
-												<button><i class="icofont icofont-send-mail"></i></button>
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-							<div class="details-comment">
-								<a class="theme-btn theme-btn2" href="#">Post Comment</a>
-								<p>You may use these HTML tags and attributes: You may use these HTML tags and attributes: You may use these HTML tags and attributes: </p>
-							</div>
-							<div class="details-thumb">
-								<div class="details-thumb-prev">
-									<div class="thumb-icon">
-										<i class="icofont icofont-simple-left"></i>
-									</div>
-									<div class="thumb-text">
-										<h4>Previous Post</h4>
-										<p>Standard Post With Gallery</p>
-									</div>
-								</div>
-								<div class="details-thumb-next">
-									<div class="thumb-text">
-										<h4>Next Post</h4>
-										<p>Standard Post With Preview Image</p>
-									</div>
-									<div class="thumb-icon">
-										<i class="icofont icofont-simple-right"></i>
-									</div>
-								</div>
-							</div>
+					<div class="col-lg-12">
+					    <div class="section-title pb-20">
+							<h1><i class="icofont icofont-coffee-cup"></i> Latest News</h1>
 						</div>
 					</div>
-					<div class="col-lg-3 text-center text-lg-left">
-					    <div class="portfolio-sidebar">
-							<img src="assets/img/sidebar/sidebar1.png" alt="sidebar" />
-							<img src="assets/img/sidebar/sidebar2.png" alt="sidebar" />
-							<img src="assets/img/sidebar/sidebar4.png" alt="sidebar" />
+				</div>
+				<hr />
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="single-news">
+							<div class="news-bg-1"></div>
+							<div class="news-date">
+								<h2><span>NOV</span> 25</h2>
+								<h1>2017</h1>
+							</div>
+							<div class="news-content">
+								<h2>The Witch Queen</h2>
+								<p>Witch Queen is a tall woman with a slim build. She has pink hair, which is pulled up under her hat, and teal eyes.</p>
+							</div>
+							<a href="#">Read More</a>
+						</div>
+						<div class="single-news">
+							<div class="news-bg-2"></div>
+							<div class="news-date">
+								<h2><span>NOV</span> 25</h2>
+								<h1>2017</h1>
+							</div>
+							<div class="news-content">
+								<h2>The Witch Queen</h2>
+								<p>Witch Queen is a tall woman with a slim build. She has pink hair, which is pulled up under her hat, and teal eyes.</p>
+							</div>
+							<a href="#">Read More</a>
+						</div>
+						<div class="single-news">
+							<div class="news-bg-3"></div>
+							<div class="news-date">
+								<h2><span>NOV</span> 25</h2>
+								<h1>2017</h1>
+							</div>
+							<div class="news-content">
+								<h2>The Witch Queen</h2>
+								<p>Witch Queen is a tall woman with a slim build. She has pink hair, which is pulled up under her hat, and teal eyes.</p>
+							</div>
+							<a href="#">Read More</a>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section><!-- details area end -->
+		</section><!-- blog area end -->
 		<!-- footer section start -->
 		<footer class="footer">
 			<div class="container">

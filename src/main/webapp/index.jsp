@@ -77,17 +77,17 @@
 					    <div class="mainmenu">
                             <ul id="primary-menu">
                                 <li><a class="active" href="/">Home</a></li>
-                                <li><a href="movies.html">Movies</a></li>
-                                <li><a href="celebrities.html">CelebritiesList</a></li>
-                                <li><a href="top-movies.html">Top Movies</a></li>
-                                <li><a href="blog.html">News</a></li>
+                                <li><a href="movies.jsp">Movies</a></li>
+                                <li><a href="celebrities.jsp">CelebritiesList</a></li>
+                                <li><a href="top-movies.jsp">Top Movies</a></li>
+                                <li><a href="blog.jsp">News</a></li>
 								<li><a href="#">Pages <i class="icofont icofont-simple-down"></i></a>
 									<ul>
-										<li><a href="blog-details.html">Blog Details</a></li>
-										<li><a href="movie-details.html">Movie Details</a></li>
+										<li><a href="blog-details.jsp">Blog Details</a></li>
+										<li><a href="movie-details.jsp">Movie Details</a></li>
 									</ul>
 								</li>
-                                							<li><a class="theme-btn" href="#"><i class="icofont icofont-ticket"></i> Tickets</a></li>
+                                							                                                <li><a class="theme-btn" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-ticket"></i> Tickets</a></li>
                             </ul>
 					    </div>
 					</div>
@@ -185,230 +185,22 @@
 		
 
 		
-		<div class="buy-ticket">
+		<!-- My Tickets Modal -->
+		<div class="my-tickets-modal" id="myTicketsModal">
 			<div class="container">
-				<div class="buy-ticket-area">
-					<a href="#"><i class="icofont icofont-close"></i></a>
+				<div class="my-tickets-area">
+					<a href="#" onclick="closeMyTicketsModal()"><i class="icofont icofont-close"></i></a>
 					<div class="row">
-						<div class="col-lg-8">
-							<div class="buy-ticket-box">
-								<h4>Buy Tickets</h4>
-								<h5>Seat</h5>
-								<h6>Screen</h6>
-								<div class="ticket-box-table">
-									<table class="ticket-table-seat">
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-									</table>
-									<table>
-										<tr>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>2</td>
-										</tr>
-										<tr>
-											<td>3</td>
-										</tr>
-										<tr>
-											<td>4</td>
-										</tr>
-										<tr>
-											<td>5</td>
-										</tr>
-									</table>
-									<table class="ticket-table-seat">
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td class="active">1</td>
-											<td class="active">1</td>
-											<td class="active">1</td>
-											<td class="active">1</td>
-											<td class="active">1</td>
-											<td class="active">1</td>
-											<td class="active">1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-									</table>
-									<table>
-										<tr>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>2</td>
-										</tr>
-										<tr>
-											<td>3</td>
-										</tr>
-										<tr>
-											<td>4</td>
-										</tr>
-										<tr>
-											<td>5</td>
-										</tr>
-									</table>
-									<table class="ticket-table-seat">
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-										</tr>
-									</table>
+						<div class="col-lg-12">
+							<div class="my-tickets-box">
+								<h4><i class="icofont icofont-ticket"></i> My Tickets</h4>
+								<div id="myTicketsContent">
+									<!-- Content will be loaded here via AJAX -->
+									<div class="loading-spinner">
+										<i class="icofont icofont-spinner-alt-4"></i>
+										<p>Loading your tickets...</p>
+									</div>
 								</div>
-								<div class="ticket-box-available">
-									<input type="checkbox" />
-									<span>Available</span>
-									<input type="checkbox" checked />
-									<span>Unavailable</span>
-									<input type="checkbox" />
-									<span>Selected</span>
-								</div>
-								<a href="#" class="theme-btn">previous</a>
-								<a href="#" class="theme-btn">Next</a>
-							</div>
-						</div>
-						<div class="col-lg-3 offset-lg-1">
-							<div class="buy-ticket-box mtr-30">
-								<h4>Your Information</h4>
-								<ul>
-									<li>
-										<p>Location</p>
-										<span>HB Cinema Box Corner</span>
-									</li>
-									<li>
-										<p>TIME</p>
-										<span>2018.07.09   20:40</span>
-									</li>
-									<li>
-										<p>Movie name</p>
-										<span>Home Alone</span>
-									</li>
-									<li>
-										<p>Ticket number</p>
-										<span>2 Adults, 2 Children, 2 Seniors</span>
-									</li>
-									<li>
-										<p>Price</p>
-										<span>89$</span>
-									</li>
-								</ul>
 							</div>
 						</div>
 					</div>
@@ -445,7 +237,7 @@
 										<span class="read-more-btn" onclick="toggleDescription(this)" style="color: #eb315a; cursor: pointer; margin-left: 5px;">Read more</span>
 									</p>
 									<div class="slide-trailor">
-										<a class="theme-btn theme-btn2" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-play"></i> Tickets</a>
+										<a class="theme-btn theme-btn2" href="#" onclick="handleBuyTicketClick(); return false;"><i class="icofont icofont-play"></i> Buy Tickets</a>
 									</div>
 								</div>
 							</div>
@@ -478,7 +270,7 @@
 										<span class="read-more-btn" onclick="toggleDescription(this)" style="color: #eb315a; cursor: pointer; margin-left: 5px;">Read more</span>
 									</p>
 									<div class="slide-trailor">
-										<a class="theme-btn theme-btn2" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-play"></i> Tickets</a>
+										<a class="theme-btn theme-btn2" href="#" onclick="handleBuyTicketClick(); return false;"><i class="icofont icofont-play"></i> Buy Tickets</a>
 									</div>
 								</div>
 							</div>
@@ -511,7 +303,7 @@
 										<span class="read-more-btn" onclick="toggleDescription(this)" style="color: #eb315a; cursor: pointer; margin-left: 5px;">Read more</span>
 									</p>
 									<div class="slide-trailor">
-										<a class="theme-btn theme-btn2" href="#" onclick="handleTicketClick(); return false;"><i class="icofont icofont-play"></i> Tickets</a>
+										<a class="theme-btn theme-btn2" href="#" onclick="handleBuyTicketClick(); return false;"><i class="icofont icofont-play"></i> Buy Tickets</a>
 									</div>
 								</div>
 							</div>
@@ -585,6 +377,258 @@
 			to {
 				opacity: 1;
 				transform: translateY(0);
+			}
+		}
+		</style>
+		
+		<!-- My Tickets Modal CSS -->
+		<style>
+		/* My Tickets Modal Styles */
+		.my-tickets-modal {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 100%;
+			display: none;
+			background: rgba(0,0,0,0.8);
+			z-index: 9999;
+			color: #171717;
+		}
+
+		.my-tickets-area {
+			margin-top: 50px;
+			background: #fff;
+			box-shadow: 0 0 20px rgba(0,0,0,0.3);
+			position: relative;
+			padding: 40px;
+			border-radius: 10px;
+			max-width: 90%;
+			margin-left: auto;
+			margin-right: auto;
+			max-height: 80vh;
+			overflow-y: auto;
+		}
+
+		.my-tickets-area > a {
+			color: #171717;
+			font-size: 30px;
+			top: 15px;
+			right: 20px;
+			position: absolute;
+			text-decoration: none;
+			z-index: 1000;
+		}
+
+		.my-tickets-area > a:hover {
+			color: #eb315a;
+		}
+
+		.my-tickets-box h4 {
+			color: #eb315a;
+			margin-bottom: 30px;
+			text-align: center;
+			font-size: 28px;
+		}
+
+		.my-tickets-box h4 i {
+			margin-right: 10px;
+		}
+
+		.loading-spinner {
+			text-align: center;
+			padding: 40px;
+			color: #666;
+		}
+
+		.loading-spinner i {
+			font-size: 40px;
+			color: #eb315a;
+			animation: spin 1s linear infinite;
+		}
+
+		@keyframes spin {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+
+		/* Ticket content styles */
+		.tickets-summary {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 20px;
+			margin-bottom: 30px;
+		}
+
+		.stat-card {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			text-align: center;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+		}
+
+		.stat-number {
+			font-size: 32px;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+
+		.stat-label {
+			font-size: 14px;
+			opacity: 0.9;
+		}
+
+		.booking-group {
+			background: #f8f9fa;
+			border-radius: 10px;
+			padding: 20px;
+			margin-bottom: 20px;
+			border-left: 4px solid #eb315a;
+		}
+
+		.booking-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 15px;
+			padding-bottom: 10px;
+			border-bottom: 1px solid #dee2e6;
+		}
+
+		.booking-date {
+			font-weight: bold;
+			color: #333;
+			font-size: 16px;
+		}
+
+		.booking-summary {
+			display: flex;
+			gap: 20px;
+			font-size: 14px;
+			color: #666;
+		}
+
+		.tickets-list {
+			display: grid;
+			gap: 15px;
+		}
+
+		.ticket-item {
+			background: white;
+			border-radius: 8px;
+			padding: 15px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+			border: 1px solid #e9ecef;
+		}
+
+		.ticket-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 10px;
+		}
+
+		.movie-title {
+			font-weight: bold;
+			color: #333;
+			font-size: 16px;
+		}
+
+		.ticket-id {
+			color: #666;
+			font-size: 14px;
+		}
+
+		.ticket-details {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+			gap: 10px;
+			font-size: 14px;
+		}
+
+		.detail-item {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.detail-label {
+			color: #666;
+			font-size: 12px;
+			text-transform: uppercase;
+			margin-bottom: 2px;
+		}
+
+		.detail-value {
+			color: #333;
+			font-weight: 500;
+		}
+
+		.seat-badge {
+			background: #eb315a;
+			color: white;
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 12px;
+			font-weight: bold;
+		}
+
+		.no-tickets {
+			text-align: center;
+			padding: 60px 20px;
+			color: #666;
+		}
+
+		.no-tickets i {
+			font-size: 60px;
+			color: #ddd;
+			margin-bottom: 20px;
+			display: block;
+		}
+
+		.buy-tickets-btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			background: #eb315a;
+			color: white;
+			padding: 12px 24px;
+			border-radius: 6px;
+			text-decoration: none;
+			font-weight: 500;
+			transition: all 0.3s ease;
+			margin-top: 20px;
+		}
+
+		.buy-tickets-btn:hover {
+			background: #d63384;
+			color: white;
+			text-decoration: none;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(235, 49, 90, 0.3);
+		}
+
+		/* Responsive design */
+		@media (max-width: 768px) {
+			.my-tickets-area {
+				margin-top: 20px;
+				padding: 20px;
+				max-width: 95%;
+			}
+
+			.tickets-summary {
+				grid-template-columns: 1fr;
+			}
+
+			.booking-summary {
+				flex-direction: column;
+				gap: 10px;
+			}
+
+			.ticket-details {
+				grid-template-columns: 1fr;
 			}
 		}
 		</style>
@@ -1447,8 +1491,111 @@
 				}
 			}
 			
-			// Ticket click handler - FINAL VERSION
+			// Ticket history click handler - NEW MODAL VERSION
 			function handleTicketClick() {
+				console.log('handleTicketClick called');
+				// Check login status
+				const isLoggedIn = document.querySelector('.header ul li a[href="cinema?action=logout"]') !== null;
+				console.log('Is logged in:', isLoggedIn);
+				
+				if (isLoggedIn) {
+					// Show modal instead of redirecting
+					console.log('User is logged in, showing modal...');
+					showMyTicketsModal();
+				} else {
+					// User not logged in - show login popup
+					sessionStorage.setItem('redirectAfterLogin', 'cinema?action=my-tickets');
+					
+					// Show login popup
+					const loginArea = document.querySelector('.login-area');
+					if (loginArea) {
+						// Clear any existing inline styles first
+						loginArea.style.cssText = '';
+						loginArea.classList.add('active');
+					}
+					
+					// Ensure login form is shown (hide signup form)
+					const loginForm = document.getElementById('loginForm');
+					const signupForm = document.getElementById('signupForm');
+					if (loginForm) loginForm.style.display = 'block';
+					if (signupForm) signupForm.style.display = 'none';
+					
+					// Show ticket purchase message
+					const messageDiv = document.getElementById('auth-message');
+					if (messageDiv) {
+						messageDiv.innerHTML = '<strong>You need to login to view your tickets!</strong>';
+						messageDiv.style.cssText = 'display: block; color: #856404; background: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; margin: 10px 0; border-radius: 4px; text-align: center;';
+					}
+				}
+			}
+			
+			// Show My Tickets Modal
+			function showMyTicketsModal() {
+				console.log('showMyTicketsModal called');
+				const modal = document.getElementById('myTicketsModal');
+				if (modal) {
+					console.log('Modal found, showing...');
+					modal.style.display = 'block';
+					loadMyTicketsData();
+				} else {
+					console.error('Modal not found!');
+				}
+			}
+			
+			// Close My Tickets Modal
+			function closeMyTicketsModal() {
+				const modal = document.getElementById('myTicketsModal');
+				if (modal) {
+					modal.style.display = 'none';
+				}
+			}
+			
+			// Load tickets data via AJAX
+			function loadMyTicketsData() {
+				const contentDiv = document.getElementById('myTicketsContent');
+				if (!contentDiv) return;
+				
+				// Show loading spinner
+				contentDiv.innerHTML = `
+					<div class="loading-spinner">
+						<i class="icofont icofont-spinner-alt-4"></i>
+						<p>Loading your tickets...</p>
+					</div>
+				`;
+				
+				// Make AJAX request
+				fetch('cinema?action=my-tickets-ajax', {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				})
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+					return response.text();
+				})
+				.then(html => {
+					contentDiv.innerHTML = html;
+				})
+				.catch(error => {
+					console.error('Error loading tickets:', error);
+					contentDiv.innerHTML = `
+						<div class="no-tickets">
+							<i class="icofont icofont-exclamation-circle"></i>
+							<h3>Error Loading Tickets</h3>
+							<p>Sorry, we couldn't load your tickets. Please try again later.</p>
+							<a href="cinema?action=buy-tickets" class="buy-tickets-btn">
+								<i class="icofont icofont-plus-circle"></i> Buy Tickets
+							</a>
+						</div>
+					`;
+				});
+			}
+			
+			// Buy ticket click handler
+			function handleBuyTicketClick() {
 				// Check login status
 				const isLoggedIn = document.querySelector('.header ul li a[href="cinema?action=logout"]') !== null;
 				
@@ -1487,7 +1634,13 @@
 				if (isUserLoggedIn && sessionStorage.getItem('redirectAfterLogin')) {
 					const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
 					sessionStorage.removeItem('redirectAfterLogin');
-					window.location.href = redirectUrl;
+					
+					// If it's my-tickets, show modal instead of redirecting
+					if (redirectUrl === 'cinema?action=my-tickets') {
+						showMyTicketsModal();
+					} else {
+						window.location.href = redirectUrl;
+					}
 				}
 			});
 			
@@ -1525,13 +1678,17 @@
 			document.addEventListener('click', function(event) {
 				const loginArea = document.querySelector('.login-area');
 				const loginBox = document.querySelector('.login-box');
+				const myTicketsModal = document.getElementById('myTicketsModal');
+				const myTicketsArea = document.querySelector('.my-tickets-area');
 				
 				// Don't close if clicking on ticket buttons
 				if (event.target.closest('[onclick*="handleTicketClick"]') || 
+					event.target.closest('[onclick*="handleBuyTicketClick"]') ||
 					event.target.textContent.toLowerCase().includes('ticket')) {
 					return;
 				}
 				
+				// Handle login popup close
 				if (loginArea && loginArea.classList.contains('active')) {
 					// Small delay to prevent immediate close after opening
 					setTimeout(function() {
@@ -1539,6 +1696,13 @@
 							closeLoginPopup();
 						}
 					}, 100);
+				}
+				
+				// Handle my tickets modal close
+				if (myTicketsModal && myTicketsModal.style.display === 'block') {
+					if (!myTicketsArea.contains(event.target)) {
+						closeMyTicketsModal();
+					}
 				}
 			});
 			

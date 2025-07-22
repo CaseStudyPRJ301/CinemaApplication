@@ -6,6 +6,10 @@ import com.example.cinemaapplication.service.ICustomerService;
 import com.example.cinemaapplication.service.ITicketService;
 import com.example.cinemaapplication.service.Imp.CustomerServiceImp;
 import com.example.cinemaapplication.service.Imp.TicketServiceImp;
+import com.example.cinemaapplication.model.TicketDetail;
+import com.example.cinemaapplication.model.BookingGroup;
+import com.example.cinemaapplication.repository.Imp.TicketRepositoryImp;
+import com.example.cinemaapplication.util.BookingGroupUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,6 +57,12 @@ public class CinemaServlet extends HttpServlet {
             case "seat-selection":
                 showSeatSelection(req, resp);
                 break;
+            case "my-tickets":
+                showMyTickets(req, resp);
+                break;
+            case "my-tickets-ajax":
+                showMyTicketsAjax(req, resp);
+                break;
 
             default:
                 showHomePage(req, resp);
@@ -73,7 +83,7 @@ public class CinemaServlet extends HttpServlet {
             return;
         }
         
-        req.getRequestDispatcher("buy-tickets.jsp").forward(req, resp);
+        req.getRequestDispatcher("tickets/buy-tickets.jsp").forward(req, resp);
     }
     
     private void showSeatSelection(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -155,10 +165,70 @@ public class CinemaServlet extends HttpServlet {
             req.setAttribute("showtimeId", showtimeId);
             req.setAttribute("bookedSeatIds", bookedSeatIds);
             
-            req.getRequestDispatcher("seat-selection.jsp").forward(req, resp);
+            req.getRequestDispatcher("tickets/seat-selection.jsp").forward(req, resp);
             
         } catch (NumberFormatException e) {
             resp.sendRedirect("cinema?action=buy-tickets&error=Invalid showtime format");
+        }
+    }
+
+    private void showMyTickets(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Check if user is logged in
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("username") == null) {
+            resp.sendRedirect("cinema?action=login&message=" + 
+                java.net.URLEncoder.encode("You need to login to view your tickets!", "UTF-8"));
+            return;
+        }
+
+        String username = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
+        
+        try {
+            // Get user ID based on role
+            Integer customerId = null;
+            Integer employeeId = null;
+            
+            if ("customer".equals(role)) {
+                customerId = userRepository.getUserIdFromUsername(username, role);
+            } else if ("employee".equals(role)) {
+                employeeId = userRepository.getUserIdFromUsername(username, role);
+            } else {
+                resp.sendRedirect("cinema?action=login&message=" + 
+                    java.net.URLEncoder.encode("Invalid user role!", "UTF-8"));
+                return;
+            }
+
+            if (customerId == null && employeeId == null) {
+                resp.sendRedirect("cinema?action=login&message=" + 
+                    java.net.URLEncoder.encode("User not found!", "UTF-8"));
+                return;
+            }
+
+            // Get ticket details for this user
+            TicketRepositoryImp ticketRepository = new TicketRepositoryImp();
+            List<TicketDetail> ticketList;
+            
+            if (customerId != null) {
+                ticketList = ticketRepository.getTicketDetailsByCustomerId(customerId);
+            } else {
+                ticketList = ticketRepository.getTicketDetailsByEmployeeId(employeeId);
+            }
+            
+            // Group tickets by booking time
+            List<BookingGroup> bookingGroups = BookingGroupUtil.groupTicketsByBookingTime(ticketList);
+
+            req.setAttribute("ticketList", ticketList);
+            req.setAttribute("bookingGroups", bookingGroups);
+            req.setAttribute("username", username);
+            req.setAttribute("role", role);
+            
+            req.getRequestDispatcher("my-tickets.jsp").forward(req, resp);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendRedirect("cinema?message=" + 
+                java.net.URLEncoder.encode("Error loading tickets: " + e.getMessage(), "UTF-8"));
         }
     }
 
@@ -522,7 +592,7 @@ public class CinemaServlet extends HttpServlet {
         req.setAttribute("selectedSeats", selectedSeats.trim());
         req.setAttribute("totalPrice", totalPrice.trim());
         
-        req.getRequestDispatcher("payment.jsp").forward(req, resp);
+        req.getRequestDispatcher("tickets/payment.jsp").forward(req, resp);
     }
     
     private boolean saveBookingToDatabase(HttpServletRequest req, String showtimeId, String theaterId, String selectedSeats) {
@@ -575,9 +645,153 @@ public class CinemaServlet extends HttpServlet {
             return false;
         }
     }
-    
 
-    
+    private void showMyTicketsAjax(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Check if user is logged in
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("username") == null) {
+            resp.setContentType("text/html;charset=UTF-8");
+            resp.getWriter().write("<div class='no-tickets'><p>Please login to view your tickets.</p></div>");
+            return;
+        }
 
+        String username = (String) session.getAttribute("username");
+        String role = (String) session.getAttribute("role");
 
+        try {
+            // Get user ID based on role
+            Integer customerId = null;
+            Integer employeeId = null;
+
+            if ("customer".equals(role)) {
+                customerId = userRepository.getUserIdFromUsername(username, role);
+            } else if ("employee".equals(role)) {
+                employeeId = userRepository.getUserIdFromUsername(username, role);
+            } else {
+                resp.setContentType("text/html;charset=UTF-8");
+                resp.getWriter().write("<div class='no-tickets'><p>Invalid user role.</p></div>");
+                return;
+            }
+
+            if (customerId == null && employeeId == null) {
+                resp.setContentType("text/html;charset=UTF-8");
+                resp.getWriter().write("<div class='no-tickets'><p>User not found.</p></div>");
+                return;
+            }
+
+            // Get ticket details for this user
+            TicketRepositoryImp ticketRepository = new TicketRepositoryImp();
+            List<TicketDetail> ticketList;
+
+            if (customerId != null) {
+                ticketList = ticketRepository.getTicketDetailsByCustomerId(customerId);
+            } else {
+                ticketList = ticketRepository.getTicketDetailsByEmployeeId(employeeId);
+            }
+
+            // Group tickets by booking time
+            List<BookingGroup> bookingGroups = BookingGroupUtil.groupTicketsByBookingTime(ticketList);
+
+            // Set content type for HTML response
+            resp.setContentType("text/html;charset=UTF-8");
+            
+            // Generate HTML content
+            StringBuilder html = new StringBuilder();
+            
+            if (ticketList.isEmpty()) {
+                html.append("<div class='no-tickets'>");
+                html.append("<i class='icofont icofont-ticket'></i>");
+                html.append("<h3>No Tickets Found</h3>");
+                html.append("<p>You haven't booked any tickets yet.</p>");
+                html.append("<a href='cinema?action=buy-tickets' class='buy-tickets-btn'>");
+                html.append("<i class='icofont icofont-plus-circle'></i> Buy Tickets");
+                html.append("</a>");
+                html.append("</div>");
+            } else {
+                // Calculate totals
+                int totalTickets = ticketList.size();
+                double totalSpent = ticketList.stream().mapToDouble(t -> t.getSeatPrice()).sum();
+                int totalBookings = bookingGroups.size();
+                
+                // Summary section
+                html.append("<div class='tickets-summary'>");
+                html.append("<div class='stat-card'>");
+                html.append("<div class='stat-number'>").append(totalBookings).append("</div>");
+                html.append("<div class='stat-label'>Booking Sessions</div>");
+                html.append("</div>");
+                html.append("<div class='stat-card'>");
+                html.append("<div class='stat-number'>").append(totalTickets).append("</div>");
+                html.append("<div class='stat-label'>Total Tickets</div>");
+                html.append("</div>");
+                html.append("<div class='stat-card'>");
+                html.append("<div class='stat-number'>").append(String.format("%.0f", totalSpent)).append("</div>");
+                html.append("<div class='stat-label'>Total Spent (VND)</div>");
+                html.append("</div>");
+                html.append("</div>");
+                
+                // Booking groups
+                for (BookingGroup group : bookingGroups) {
+                    html.append("<div class='booking-group'>");
+                    html.append("<div class='booking-header'>");
+                    html.append("<div class='booking-date'>");
+                    html.append("Booking on ").append(new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(group.getBookingTime()));
+                    html.append("</div>");
+                    html.append("<div class='booking-summary'>");
+                    html.append("<span class='total-amount'>").append(group.getTotalTickets()).append(" tickets</span>");
+                    html.append("</div>");
+                    html.append("</div>");
+                    
+                    html.append("<div class='tickets-list'>");
+                    for (TicketDetail ticket : group.getTickets()) {
+                        html.append("<div class='ticket-item'>");
+                        html.append("<div class='ticket-header'>");
+                        html.append("<div class='movie-title'>").append(ticket.getMovieTitle()).append("</div>");
+                        html.append("<div class='ticket-id'>Ticket #").append(ticket.getTicketId()).append("</div>");
+                        html.append("</div>");
+                        html.append("<div class='ticket-details'>");
+                        html.append("<div class='detail-item'>");
+                        html.append("<div class='detail-label'>Theater</div>");
+                        html.append("<div class='detail-value'>").append(ticket.getTheaterName()).append("</div>");
+                        html.append("</div>");
+                        html.append("<div class='detail-item'>");
+                        html.append("<div class='detail-label'>Showtime</div>");
+                        html.append("<div class='detail-value'>").append(new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ticket.getShowtime())).append("</div>");
+                        html.append("</div>");
+                        html.append("<div class='detail-item'>");
+                        html.append("<div class='detail-label'>Seat</div>");
+                        html.append("<div class='detail-value'>");
+                        html.append("<span class='seat-badge'>").append(ticket.getSeatPosition()).append("</span>");
+                        html.append("</div>");
+                        html.append("</div>");
+                        html.append("<div class='detail-item'>");
+                        html.append("<div class='detail-label'>Type</div>");
+                        html.append("<div class='detail-value'>").append(ticket.getSeatType()).append("</div>");
+                        html.append("</div>");
+                        html.append("<div class='detail-item'>");
+                        html.append("<div class='detail-label'>Price</div>");
+                        html.append("<div class='detail-value'>").append(String.format("%.0f VND", ticket.getSeatPrice())).append("</div>");
+                        html.append("</div>");
+                        html.append("</div>");
+                        html.append("</div>");
+                    }
+                    html.append("</div>");
+                    html.append("</div>");
+                }
+                
+                // Buy more tickets button
+                html.append("<div style='text-align: center; margin-top: 30px;'>");
+                html.append("<a href='cinema?action=buy-tickets' class='buy-tickets-btn'>");
+                html.append("<i class='icofont icofont-plus-circle'></i> Buy More Tickets");
+                html.append("</a>");
+                html.append("</div>");
+            }
+            
+            resp.getWriter().write(html.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.setContentType("text/html;charset=UTF-8");
+            resp.getWriter().write("<div class='no-tickets'><p>Error loading tickets: " + e.getMessage() + "</p></div>");
+        }
+    }
 }
