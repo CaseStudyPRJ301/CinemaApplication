@@ -45,7 +45,6 @@ public class CinemaServlet extends HttpServlet {
                 showSignupForm(req, resp);
                 break;
             case "complete-profile":
-                // This is handled by POST method
                 showHomePage(req, resp);
                 break;
             case "logout":
